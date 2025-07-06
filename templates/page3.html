@@ -1,0 +1,346 @@
+{% extends "base.html" %}
+
+{% block title %}Optimal Advertising Budget{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Optimal Advertising Budget</h1>
+<p>This page analyzes the relationship between advertising spend and sales uplift.</p>
+<p>Page number: 3</p>
+
+<div style="display: flex; gap: 20px; margin-top: 30px;">
+    <div class="points-section" style="flex: 1;">
+        <h3 class="points-title">Point Management</h3>
+        <div id="points-container">
+            <div class="point-row" data-index="0">
+                <span class="point-label">Point 1:</span>
+                <input type="number" class="point-input" placeholder="X" value="0" onchange="updatePlot()">
+                <input type="number" class="point-input" placeholder="Y" value="0" onchange="updatePlot()">
+                <button class="btn btn-sm btn-danger" onclick="removeSpecificPoint(0)" style="margin-left: 5px;">×</button>
+            </div>
+            <div class="point-row" data-index="1">
+                <span class="point-label">Point 2:</span>
+                <input type="number" class="point-input" placeholder="X" value="0" onchange="updatePlot()">
+                <input type="number" class="point-input" placeholder="Y" value="0" onchange="updatePlot()">
+                <button class="btn btn-sm btn-danger" onclick="removeSpecificPoint(1)" style="margin-left: 5px;">×</button>
+            </div>
+            <div class="point-row" data-index="2">
+                <span class="point-label">Point 3:</span>
+                <input type="number" class="point-input" placeholder="X" value="0" onchange="updatePlot()">
+                <input type="number" class="point-input" placeholder="Y" value="0" onchange="updatePlot()">
+                <button class="btn btn-sm btn-danger" onclick="removeSpecificPoint(2)" style="margin-left: 5px;">×</button>
+            </div>
+        </div>
+        <button class="btn btn-success" onclick="addPoint()">+</button>
+        <button class="btn btn-primary" onclick="submitToBackend()" style="margin-top: 10px;">Process</button>
+        <button class="btn btn-warning" onclick="loadDemo()" style="margin-top: 10px;">Load Demo Points</button>
+    </div>
+    
+    <div class="plot-section" style="flex: 1;">
+        <h3 class="points-title">Scatter Plot</h3>
+        <div style="background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6;">
+            <canvas id="scatterPlot" width="400" height="300"></canvas>
+        </div>
+        <div id="status-message" style="margin-top: 10px; padding: 10px; border-radius: 4px; display: none;"></div>
+        <div id="fit-info" style="margin-top: 10px; padding: 10px; border-radius: 4px; background-color: #e7f3ff; border: 1px solid #b3d9ff; display: none;"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let pointCounter = 3; // Start with 3 points
+    let scatterChart;
+    let predictionLine = [];
+    
+    // Initialize the scatter plot
+    function initPlot() {
+        const ctx = document.getElementById('scatterPlot').getContext('2d');
+        scatterChart = new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [
+                    {
+                        label: 'Observed Data',
+                        data: [
+                            {x: 0, y: 0},
+                            {x: 0, y: 0},
+                            {x: 0, y: 0}
+                        ],
+                        backgroundColor: 'rgba(54, 162, 235, 0.8)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 2,
+                        pointRadius: 8
+                    },
+                    {
+                        label: 'Prediction Line',
+                        data: [],
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 3,
+                        pointRadius: 0,
+                        showLine: true,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: {
+                            display: true,
+                            text: 'Ad Spend ($K)'
+                        },
+                        ticks: {
+                            callback: function(value, index, values) {
+                                return value;
+                            }
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Sales Uplift ($K)'
+                        },
+                        ticks: {
+                            callback: function(value, index, values) {
+                                return value;
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Advertising ROI Analysis'
+                    }
+                }
+            }
+        });
+    }
+    
+    // Update the plot with current point values
+    function updatePlot() {
+        const inputs = document.querySelectorAll('.point-input');
+        const data = [];
+        
+        for (let i = 0; i < inputs.length; i += 2) {
+            const x = parseFloat(inputs[i].value) || 0;
+            const y = parseFloat(inputs[i + 1].value) || 0;
+            data.push({x: x, y: y});
+        }
+        
+        scatterChart.data.datasets[0].data = data;
+        
+        // Calculate scale ranges with padding
+        if (data.length > 0) {
+            const xValues = data.map(d => d.x);
+            const yValues = data.map(d => d.y);
+            
+            const minX = Math.min(...xValues);
+            const maxX = Math.max(...xValues);
+            const minY = Math.min(...yValues);
+            const maxY = Math.max(...yValues);
+            
+            const xRange = maxX - minX;
+            const yRange = maxY - minY;
+            
+            // Add 40% padding to each side
+            scatterChart.options.scales.x.min = Math.max(0, minX - xRange * 0.4);
+            scatterChart.options.scales.x.max = maxX + xRange * 0.4;
+            scatterChart.options.scales.y.min = Math.max(0, minY - yRange * 0.4);
+            scatterChart.options.scales.y.max = maxY + yRange * 0.4;
+        }
+        
+        scatterChart.update();
+    }
+    
+    // Load demonstration points
+    function loadDemo() {
+        const statusDiv = document.getElementById('status-message');
+        statusDiv.style.display = 'block';
+        statusDiv.style.backgroundColor = '#fff3cd';
+        statusDiv.style.color = '#856404';
+        statusDiv.style.border = '1px solid #ffeaa7';
+        statusDiv.textContent = 'Loading demonstration points...';
+        
+        fetch('/load_demo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                page: 'page3'
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Clear existing points
+                const container = document.getElementById('points-container');
+                container.innerHTML = '';
+                pointCounter = 0;
+                
+                // Add demo points
+                data.points.forEach((point, index) => {
+                    pointCounter++;
+                    const newPoint = document.createElement('div');
+                    newPoint.className = 'point-row';
+                    newPoint.setAttribute('data-index', index);
+                    newPoint.innerHTML = `
+                        <span class="point-label">Point ${pointCounter}:</span>
+                        <input type="number" class="point-input" placeholder="X" value="${point.x}" onchange="updatePlot()">
+                        <input type="number" class="point-input" placeholder="Y" value="${point.y}" onchange="updatePlot()">
+                        <button class="btn btn-sm btn-danger" onclick="removeSpecificPoint(${index})" style="margin-left: 5px;">×</button>
+                    `;
+                    container.appendChild(newPoint);
+                });
+                
+                updatePlot();
+                statusDiv.style.backgroundColor = '#d4edda';
+                statusDiv.style.color = '#155724';
+                statusDiv.style.border = '1px solid #c3e6cb';
+                statusDiv.textContent = data.message;
+            } else {
+                statusDiv.style.backgroundColor = '#f8d7da';
+                statusDiv.style.color = '#721c24';
+                statusDiv.style.border = '1px solid #f5c6cb';
+                statusDiv.textContent = 'Error: ' + data.message;
+            }
+        })
+        .catch(error => {
+            statusDiv.style.backgroundColor = '#f8d7da';
+            statusDiv.style.color = '#721c24';
+            statusDiv.style.border = '1px solid #f5c6cb';
+            statusDiv.textContent = 'Error: ' + error.message;
+        });
+    }
+    
+    // Submit points to backend
+    function submitToBackend() {
+        const inputs = document.querySelectorAll('.point-input');
+        const points = [];
+        
+        for (let i = 0; i < inputs.length; i += 2) {
+            const x = parseFloat(inputs[i].value) || 0;
+            const y = parseFloat(inputs[i + 1].value) || 0;
+            points.push({x: x, y: y});
+        }
+        
+        const statusDiv = document.getElementById('status-message');
+        const fitInfoDiv = document.getElementById('fit-info');
+        statusDiv.style.display = 'block';
+        statusDiv.style.backgroundColor = '#d4edda';
+        statusDiv.style.color = '#155724';
+        statusDiv.style.border = '1px solid #c3e6cb';
+        statusDiv.textContent = 'Processing points...';
+        
+        fetch('/submit_points', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                page: 'page3',
+                points: points
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                predictionLine = data.prediction_line || [];
+                updatePlotWithPrediction();
+                
+                statusDiv.style.backgroundColor = '#d4edda';
+                statusDiv.style.color = '#155724';
+                statusDiv.style.border = '1px solid #c3e6cb';
+                statusDiv.textContent = data.message;
+                
+                // Display fit information
+                if (data.fit_message) {
+                    fitInfoDiv.style.display = 'block';
+                    fitInfoDiv.textContent = data.fit_message;
+                } else {
+                    fitInfoDiv.style.display = 'none';
+                }
+            } else {
+                statusDiv.style.backgroundColor = '#f8d7da';
+                statusDiv.style.color = '#721c24';
+                statusDiv.style.border = '1px solid #f5c6cb';
+                statusDiv.textContent = 'Error: ' + data.message;
+                fitInfoDiv.style.display = 'none';
+            }
+        })
+        .catch(error => {
+            statusDiv.style.backgroundColor = '#f8d7da';
+            statusDiv.style.color = '#721c24';
+            statusDiv.style.border = '1px solid #f5c6cb';
+            statusDiv.textContent = 'Error: ' + error.message;
+            fitInfoDiv.style.display = 'none';
+        });
+    }
+    
+    // Update plot with prediction line
+    function updatePlotWithPrediction() {
+        const predictionData = predictionLine.map(point => ({
+            x: point.x,
+            y: point.y
+        }));
+        
+        scatterChart.data.datasets[1].data = predictionData;
+        
+        // Keep the existing chart scales - don't adjust them
+        scatterChart.update();
+    }
+    
+    function addPoint() {
+        pointCounter++;
+        const container = document.getElementById('points-container');
+        const currentIndex = container.children.length;
+        const newPoint = document.createElement('div');
+        newPoint.className = 'point-row';
+        newPoint.setAttribute('data-index', currentIndex);
+        newPoint.innerHTML = `
+            <span class="point-label">Point ${pointCounter}:</span>
+            <input type="number" class="point-input" placeholder="X" value="0" onchange="updatePlot()">
+            <input type="number" class="point-input" placeholder="Y" value="0" onchange="updatePlot()">
+            <button class="btn btn-sm btn-danger" onclick="removeSpecificPoint(${currentIndex})" style="margin-left: 5px;">×</button>
+        `;
+        container.appendChild(newPoint);
+        updatePlot();
+    }
+    
+    function removeSpecificPoint(index) {
+        const container = document.getElementById('points-container');
+        const points = container.getElementsByClassName('point-row');
+        
+        if (points.length > 1) { // Keep at least one point
+            // Remove the specific point
+            container.removeChild(points[index]);
+            pointCounter--;
+            
+            // Update indices and labels for remaining points
+            const remainingPoints = container.getElementsByClassName('point-row');
+            for (let i = 0; i < remainingPoints.length; i++) {
+                const pointRow = remainingPoints[i];
+                pointRow.setAttribute('data-index', i);
+                pointRow.querySelector('.point-label').textContent = `Point ${i + 1}:`;
+                pointRow.querySelector('.btn-danger').setAttribute('onclick', `removeSpecificPoint(${i})`);
+            }
+            
+            updatePlot();
+        } else {
+            alert('You must keep at least one point!');
+        }
+    }
+    
+    // Initialize the plot when the page loads
+    window.onload = function() {
+        initPlot();
+        // Start with 3 blank points
+        updatePlot();
+    };
+</script>
+{% endblock %} 

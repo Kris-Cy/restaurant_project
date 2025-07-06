@@ -1,0 +1,1016 @@
+{% extends "base.html" %}
+
+{% block title %}Dish Price Calculator{% endblock %}
+
+
+
+{% block content %}
+<!-- Add Chart.js library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script>
+    // Fallback if the first CDN fails
+    if (typeof Chart === 'undefined') {
+        console.log('Trying fallback CDN...');
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/chart.js@3.9.1/dist/chart.min.js';
+        script.onload = function() {
+            console.log('Chart.js loaded from fallback CDN');
+            if (typeof updateAllCalculations === 'function') {
+                updateAllCalculations();
+            }
+        };
+        script.onerror = function() {
+            console.error('Failed to load Chart.js from both CDNs');
+        };
+        document.head.appendChild(script);
+    } else {
+        console.log('Chart.js loaded successfully from primary CDN');
+    }
+</script>
+
+<h1 class="page-title">Dish Price Calculator</h1>
+<p>Calculate the optimal pricing for your restaurant dishes based on ingredient costs and desired profit margins.</p>
+
+<div style="display: flex; gap: 20px; margin-top: 30px;">
+    <!-- Left Section: Ingredient Management -->
+    <div class="points-section" style="flex: 1;">
+        <h3 class="points-title">Ingredient Management</h3>
+        <div id="ingredients-container">
+            <div class="ingredient-row" data-index="0">
+                <span class="ingredient-label">Ingredient 1:</span>
+                <div class="ingredient-fields">
+                    <div class="ingredient-field">
+                        <label>Name</label>
+                        <input type="text" class="ingredient-name" placeholder="Ingredient Name" value="Ground Beef">
+                    </div>
+                    <div class="ingredient-field">
+                        <label>Cost ($)</label>
+                        <input type="number" class="ingredient-cost" placeholder="Cost ($)" value="8.50" step="0.01" onchange="updateAllCalculations()">
+                    </div>
+                    <div class="ingredient-field">
+                        <label>Amount</label>
+                        <input type="number" class="ingredient-amount" placeholder="Amount" value="0.25" step="0.01" onchange="updateAllCalculations()">
+                    </div>
+                    <div class="ingredient-field">
+                        <label>Unit</label>
+                        <select class="ingredient-unit" onchange="updateAllCalculations()">
+                            <option value="lbs">lbs</option>
+                            <option value="oz">oz</option>
+                            <option value="g">g</option>
+                            <option value="cups">cups</option>
+                            <option value="tbsp">tbsp</option>
+                            <option value="tsp">tsp</option>
+                            <option value="each">each</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-sm btn-danger" onclick="removeIngredient(0)" style="margin-left: 5px; align-self: flex-end;">×</button>
+                </div>
+            </div>
+            <div class="ingredient-row" data-index="1">
+                <span class="ingredient-label">Ingredient 2:</span>
+                <div class="ingredient-fields">
+                    <div class="ingredient-field">
+                        <label>Name</label>
+                        <input type="text" class="ingredient-name" placeholder="Ingredient Name" value="Bun">
+                    </div>
+                    <div class="ingredient-field">
+                        <label>Cost ($)</label>
+                        <input type="number" class="ingredient-cost" placeholder="Cost ($)" value="0.50" step="0.01" onchange="updateAllCalculations()">
+                    </div>
+                    <div class="ingredient-field">
+                        <label>Amount</label>
+                        <input type="number" class="ingredient-amount" placeholder="Amount" value="1" step="0.01" onchange="updateAllCalculations()">
+                    </div>
+                    <div class="ingredient-field">
+                        <label>Unit</label>
+                        <select class="ingredient-unit" onchange="updateAllCalculations()">
+                            <option value="each">each</option>
+                            <option value="lbs">lbs</option>
+                            <option value="oz">oz</option>
+                            <option value="g">g</option>
+                            <option value="cups">cups</option>
+                            <option value="tbsp">tbsp</option>
+                            <option value="tsp">tsp</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-sm btn-danger" onclick="removeIngredient(1)" style="margin-left: 5px; align-self: flex-end;">×</button>
+                </div>
+            </div>
+            <div class="ingredient-row" data-index="2">
+                <span class="ingredient-label">Ingredient 3:</span>
+                <div class="ingredient-fields">
+                    <div class="ingredient-field">
+                        <label>Name</label>
+                        <input type="text" class="ingredient-name" placeholder="Ingredient Name" value="Cheese">
+                    </div>
+                    <div class="ingredient-field">
+                        <label>Cost ($)</label>
+                        <input type="number" class="ingredient-cost" placeholder="Cost ($)" value="4.00" step="0.01" onchange="updateAllCalculations()">
+                    </div>
+                    <div class="ingredient-field">
+                        <label>Amount</label>
+                        <input type="number" class="ingredient-amount" placeholder="Amount" value="0.125" step="0.01" onchange="updateAllCalculations()">
+                    </div>
+                    <div class="ingredient-field">
+                        <label>Unit</label>
+                        <select class="ingredient-unit" onchange="updateAllCalculations()">
+                            <option value="lbs">lbs</option>
+                            <option value="oz">oz</option>
+                            <option value="g">g</option>
+                            <option value="cups">cups</option>
+                            <option value="tbsp">tbsp</option>
+                            <option value="tsp">tsp</option>
+                            <option value="each">each</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-sm btn-danger" onclick="removeIngredient(2)" style="margin-left: 5px; align-self: flex-end;">×</button>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-success" onclick="addIngredient()">+ Add Ingredient</button>
+        
+        <!-- Dish Information -->
+        <div style="margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px; margin-bottom: 20px;">
+            <h4 style="margin-top: 0;">Dish Information</h4>
+            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+                <label style="min-width: 120px;">Dish Name:</label>
+                <input type="text" id="dish-name" value="Classic Burger" style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+                <label style="min-width: 120px;">Labor Cost ($):</label>
+                <input type="number" id="labor-cost" value="2.50" step="0.01" onchange="updateAllCalculations()" style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <label style="min-width: 120px;">Overhead Cost ($):</label>
+                <input type="number" id="overhead-cost" value="1.00" step="0.01" onchange="updateAllCalculations()" style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+        </div>
+        
+        <!-- Sales Data Input -->
+        <div style="background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6; margin-bottom: 20px;">
+            <h4 style="margin-top: 0; color: #333;">Sales Data Analysis</h4>
+            <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Add historical sales data to find the optimal price point</p>
+            
+            <div id="sales-data-container">
+                <div class="sales-row" data-index="0">
+                    <span class="sales-label">Data Point 1:</span>
+                    <div class="sales-fields">
+                        <div class="sales-field">
+                            <label>Price ($)</label>
+                            <input type="number" class="sales-price" placeholder="Price" value="8.00" step="0.01" onchange="updateSalesChart()">
+                        </div>
+                        <div class="sales-field">
+                            <label>Sales</label>
+                            <input type="number" class="sales-quantity" placeholder="Quantity" value="45" step="1" onchange="updateSalesChart()">
+                        </div>
+                        <button class="btn btn-sm btn-danger" onclick="removeSalesData(0)" style="margin-left: 5px; align-self: flex-end;">×</button>
+                    </div>
+                </div>
+                <div class="sales-row" data-index="1">
+                    <span class="sales-label">Data Point 2:</span>
+                    <div class="sales-fields">
+                        <div class="sales-field">
+                            <label>Price ($)</label>
+                            <input type="number" class="sales-price" placeholder="Price" value="10.00" step="0.01" onchange="updateSalesChart()">
+                        </div>
+                        <div class="sales-field">
+                            <label>Sales</label>
+                            <input type="number" class="sales-quantity" placeholder="Quantity" value="35" step="1" onchange="updateSalesChart()">
+                        </div>
+                        <button class="btn btn-sm btn-danger" onclick="removeSalesData(1)" style="margin-left: 5px; align-self: flex-end;">×</button>
+                    </div>
+                </div>
+                <div class="sales-row" data-index="2">
+                    <span class="sales-label">Data Point 3:</span>
+                    <div class="sales-fields">
+                        <div class="sales-field">
+                            <label>Price ($)</label>
+                            <input type="number" class="sales-price" placeholder="Price" value="12.00" step="0.01" onchange="updateSalesChart()">
+                        </div>
+                        <div class="sales-field">
+                            <label>Sales</label>
+                            <input type="number" class="sales-quantity" placeholder="Quantity" value="25" step="1" onchange="updateSalesChart()">
+                        </div>
+                        <button class="btn btn-sm btn-danger" onclick="removeSalesData(2)" style="margin-left: 5px; align-self: flex-end;">×</button>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-success" onclick="addSalesData()">+ Add Sales Data</button>
+        </div>
+    </div>
+    
+    <!-- Right Section: Cost Analysis -->
+    <div class="plot-section" style="flex: 1;">
+        <h3 class="points-title">Cost Analysis & Pricing</h3>
+        
+        <!-- Cost Breakdown -->
+        <div style="background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6; margin-bottom: 20px;">
+            <h4 style="margin-top: 0; color: #333;">Cost Breakdown</h4>
+            <div id="cost-breakdown">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span>Ingredient Cost:</span>
+                    <span id="ingredient-total">$0.00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span>Labor Cost:</span>
+                    <span id="labor-total">$0.00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span>Overhead Cost:</span>
+                    <span id="overhead-total">$0.00</span>
+                </div>
+                <hr style="margin: 10px 0;">
+                <div style="display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 10px;">
+                    <span>Total Cost:</span>
+                    <span id="total-cost">$0.00</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pricing Calculator -->
+        <div style="background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6; margin-bottom: 20px;">
+            <h4 style="margin-top: 0; color: #333;">Pricing Calculator</h4>
+            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+                <label style="min-width: 120px;">Desired Profit Margin (%):</label>
+                <input type="number" id="profit-margin" value="30" min="0" max="100" onchange="updateAllCalculations()" style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px;">
+                <label style="min-width: 120px;">Suggested Price:</label>
+                <span id="suggested-price" style="font-size: 18px; font-weight: bold; color: #28a745;">$0.00</span>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <label style="min-width: 120px;">Actual Price ($):</label>
+                <input type="number" id="actual-price" value="0.00" step="0.01" onchange="calculateActualProfit()" style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+        </div>
+        
+        <!-- Profit Analysis -->
+        <div style="background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6; margin-bottom: 20px;">
+            <h4 style="margin-top: 0; color: #333;">Profit Analysis</h4>
+            <div id="profit-analysis">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span>Profit per Dish:</span>
+                    <span id="profit-per-dish">$0.00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span>Actual Profit Margin:</span>
+                    <span id="actual-profit-margin">0%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span>Cost Percentage:</span>
+                    <span id="cost-percentage">0%</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Price vs Profit Margin Chart -->
+        <div style="background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6; margin-bottom: 20px;">
+            <h4 style="margin-top: 0; color: #333;">Price vs Profit Margin</h4>
+            <p style="color: #666; font-size: 14px; margin-bottom: 15px;">See how the suggested price changes across different profit margins</p>
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Optimal Pricing Analysis -->
+        <div style="background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6; margin-bottom: 20px;">
+            <h4 style="margin-top: 0; color: #333;">Optimal Pricing Analysis</h4>
+            <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Based on your cost structure and sales data</p>
+            <div id="optimal-pricing" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                <div style="text-align: center; padding: 15px; background-color: #f8f9fa; border-radius: 6px;">
+                    <div style="font-size: 12px; color: #666; margin-bottom: 5px;">OPTIMAL PRICE</div>
+                    <div id="optimal-price" style="font-size: 24px; font-weight: bold; color: #28a745;">$0.00</div>
+                </div>
+                <div style="text-align: center; padding: 15px; background-color: #f8f9fa; border-radius: 6px;">
+                    <div style="font-size: 12px; color: #666; margin-bottom: 5px;">PROFIT MARGIN</div>
+                    <div id="optimal-profit-margin" style="font-size: 24px; font-weight: bold; color: #007bff;">0%</div>
+                </div>
+                <div style="text-align: center; padding: 15px; background-color: #f8f9fa; border-radius: 6px;">
+                    <div style="font-size: 12px; color: #666; margin-bottom: 5px;">PROJECTED SALES</div>
+                    <div id="optimal-units-sold" style="font-size: 24px; font-weight: bold; color: #dc3545;">0</div>
+                </div>
+            </div>
+            <div style="margin-top: 15px; padding: 10px; background-color: #e8f5e8; border-radius: 6px; border-left: 4px solid #28a745;">
+                <div style="font-weight: bold; color: #28a745; margin-bottom: 5px;">Projected Profit at Optimal Price:</div>
+                <div id="optimal-total-profit" style="font-size: 18px; font-weight: bold; color: #28a745;">$0.00</div>
+            </div>
+        </div>
+        
+
+        
+        <div id="status-message" style="margin-top: 10px; padding: 10px; border-radius: 4px; display: none;"></div>
+    </div>
+</div>
+
+<script>
+    let ingredientCounter = 3; // Start with 3 ingredients
+    let priceChart = null; // Global variable for the chart
+    let salesDataCounter = 3; // Start with 3 sales data points
+    
+    // Create price vs profit margin chart
+    function createPriceChart() {
+        try {
+            console.log('Creating price chart...');
+            
+            // Check if Chart.js is loaded
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js is not loaded');
+                return;
+            }
+            
+            const canvas = document.getElementById('priceChart');
+            if (!canvas) {
+                console.error('Canvas element not found');
+                return;
+            }
+            
+            const ctx = canvas.getContext('2d');
+            console.log('Canvas context obtained');
+            
+            // Destroy existing chart if it exists
+            if (priceChart) {
+                priceChart.destroy();
+                console.log('Destroyed existing chart');
+            }
+            
+            // Get total cost from the form
+            const totalCost = parseFloat(document.getElementById('total-cost').textContent.replace('$', '')) || 0;
+            console.log('Total cost:', totalCost);
+            
+            if (totalCost <= 0) {
+                console.log('No cost data available, skipping chart');
+                return;
+            }
+            
+            // Generate price range and calculate profit margins
+            const minPrice = totalCost; // Start at the total cost (break-even point)
+            const maxPrice = totalCost * 4; // Go up to 400% of cost for better visibility
+            const priceStep = (maxPrice - minPrice) / 25; // 25 data points for smoother curve
+            
+            // Get sales data from the form inputs first
+            const salesPrices = document.querySelectorAll('.sales-price');
+            const salesQuantities = document.querySelectorAll('.sales-quantity');
+            const actualSalesData = [];
+            const actualSalesPrices = [];
+            
+            for (let i = 0; i < salesPrices.length; i++) {
+                const price = parseFloat(salesPrices[i].value) || 0;
+                const quantity = parseFloat(salesQuantities[i].value) || 0;
+                if (price > 0 && quantity > 0) {
+                    actualSalesData.push(quantity);
+                    actualSalesPrices.push(price);
+                }
+            }
+            
+            // Create regression lines for both sales and profit data
+            const extendedSalesData = [];
+            const extendedProfitData = [];
+            console.log('Sales data found:', actualSalesData.length, 'points');
+            console.log('Prices:', actualSalesPrices);
+            console.log('Quantities:', actualSalesData);
+            
+            // Calculate actual profit data from sales data
+            const actualProfitData = [];
+            for (let j = 0; j < actualSalesPrices.length; j++) {
+                const actualPrice = actualSalesPrices[j];
+                const actualQuantity = actualSalesData[j];
+                const actualProfitPerUnit = actualPrice - totalCost;
+                const actualTotalProfit = actualProfitPerUnit * actualQuantity;
+                actualProfitData.push(actualTotalProfit);
+            }
+            console.log('Actual profit data:', actualProfitData);
+            
+            for (let i = 0; i <= 25; i++) {
+                const price = minPrice + (i * priceStep);
+                let predictedSales;
+                
+                try {
+                    if (actualSalesData.length >= 2) {
+                        // Exponential decay regression: units sold decreases exponentially with price
+                        const n = actualSalesData.length;
+                        
+                        // Find the maximum sales and minimum price as reference points
+                        const maxSales = Math.max(...actualSalesData);
+                        const minPrice = Math.min(...actualSalesPrices);
+                        
+                        // Calculate exponential decay parameters
+                        let totalError = 0;
+                        let bestDecayRate = 0.1; // Start with a reasonable decay rate
+                        
+                        // Try different decay rates to find the best fit
+                        for (let decayRate = 0.05; decayRate <= 0.5; decayRate += 0.01) {
+                            let error = 0;
+                            for (let j = 0; j < n; j++) {
+                                const expectedSales = maxSales * Math.exp(-decayRate * (actualSalesPrices[j] - minPrice));
+                                error += Math.abs(expectedSales - actualSalesData[j]);
+                            }
+                            if (error < totalError || totalError === 0) {
+                                totalError = error;
+                                bestDecayRate = decayRate;
+                            }
+                        }
+                        
+                        // Use exponential decay to predict sales
+                        predictedSales = Math.max(0, maxSales * Math.exp(-bestDecayRate * (price - minPrice)));
+                        console.log(`Price $${price.toFixed(2)}: Predicted sales = ${predictedSales.toFixed(1)} (decay rate: ${bestDecayRate.toFixed(3)})`);
+                        
+                    } else if (actualSalesData.length === 1) {
+                        // Single data point - use exponential decay from reference
+                        const referencePrice = actualSalesPrices[0];
+                        const referenceSales = actualSalesData[0];
+                        const priceDiff = price - referencePrice;
+                        // Exponential decay: sales decrease exponentially with price increase
+                        const decayRate = 0.15; // Reasonable decay rate
+                        predictedSales = Math.max(0, referenceSales * Math.exp(-decayRate * priceDiff));
+                    } else {
+                        // No sales data - use exponential decay curve
+                        const baseSales = 100;
+                        const priceDiff = price - minPrice;
+                        const decayRate = 0.1;
+                        predictedSales = Math.max(5, baseSales * Math.exp(-decayRate * priceDiff));
+                    }
+                } catch (error) {
+                    console.error('Error calculating predicted sales:', error);
+                    // Fallback to exponential decay estimation
+                    const baseSales = 100;
+                    const priceDiff = price - minPrice;
+                    const decayRate = 0.1;
+                    predictedSales = Math.max(5, baseSales * Math.exp(-decayRate * priceDiff));
+                }
+                
+                extendedSalesData.push(predictedSales);
+            }
+            
+            console.log('Extended sales data:', extendedSalesData);
+            
+            const labels = [];
+            const profitMargins = [];
+            
+            for (let i = 0; i <= 25; i++) {
+                const price = minPrice + (i * priceStep);
+                
+                // Calculate total profit with bowed-outwards curve
+                const baseProfit = price - totalCost;
+                if (baseProfit > 0) {
+                    // Profit per unit (linear relationship)
+                    const profitPerUnit = baseProfit;
+                    
+                    // Units sold (exponential decay from red line)
+                    const unitsSold = extendedSalesData[i];
+                    
+                    // Total profit = profit per unit × units sold
+                    // This creates a bowed-outwards curve because:
+                    // - At low prices: high units sold but low profit per unit
+                    // - At high prices: low units sold but high profit per unit
+                    // - Optimal point is where the product is maximized
+                    const totalProfit = profitPerUnit * unitsSold;
+                    
+                    profitMargins.push(totalProfit);
+                } else {
+                    // At or below cost - no profit
+                    profitMargins.push(0);
+                }
+                
+                labels.push(`$${price.toFixed(2)}`);
+            }
+            
+            console.log('Generated data:', labels, profitMargins);
+            console.log('Chart data validation:');
+            console.log('- Labels length:', labels.length);
+            console.log('- Profit margins length:', profitMargins.length);
+            console.log('- Sales data length:', extendedSalesData.length);
+            console.log('- Sample profit margins:', profitMargins.slice(0, 5));
+            console.log('- Sample sales data:', extendedSalesData.slice(0, 5));
+            
+            // Create datasets with points on the lines
+            const profitDataset = {
+                label: 'Profit($)',
+                data: profitMargins,
+                borderColor: '#007bff',
+                backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                borderWidth: 3,
+                fill: false,
+                tension: 0.1,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                pointBackgroundColor: '#007bff',
+                pointBorderColor: '#ffffff',
+                pointBorderWidth: 2,
+                pointStyle: 'circle',
+                pointHitRadius: 10,
+                yAxisID: 'y'
+            };
+            
+            const salesDataset = {
+                label: 'Projected Units Sold',
+                data: extendedSalesData,
+                borderColor: '#dc3545',
+                backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                borderWidth: 2,
+                fill: false,
+                tension: 0.1,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                pointBackgroundColor: '#dc3545',
+                pointBorderColor: '#ffffff',
+                pointBorderWidth: 2,
+                pointStyle: 'circle',
+                pointHitRadius: 10,
+                yAxisID: 'y1'
+            };
+            
+            // Create chart with just the lines (no points)
+            priceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [profitDataset, salesDataset]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    if (context.dataset.label === 'Total Profit ($)') {
+                                        return `Total Profit: $${context.parsed.y.toFixed(2)}`;
+                                                    } else if (context.dataset.label === 'Projected Units Sold') {
+                    return `Projected Sales: ${context.parsed.y.toFixed(0)}`;
+                                    }
+                                    return context.dataset.label + ': ' + context.parsed.y;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Price ($)',
+                                font: {
+                                    weight: 'bold'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Total Profit ($)',
+                                font: {
+                                    weight: 'bold'
+                                }
+                            },
+                            min: 0,
+                            max: Math.max(...profitMargins) * 1.1,
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Projected Sales',
+                                font: {
+                                    weight: 'bold'
+                                }
+                            },
+                            min: 0,
+                            max: Math.max(...extendedSalesData) * 1.1,
+                            grid: {
+                                drawOnChartArea: false
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+            });
+            
+            console.log('Chart created successfully');
+            console.log('Chart instance:', priceChart);
+            
+            // Calculate and display optimal pricing
+            calculateOptimalPricing(profitMargins, labels, extendedSalesData, totalCost);
+            
+        } catch (error) {
+            console.error('Error creating chart:', error);
+        }
+    }
+    
+    // Calculate optimal pricing based on chart data
+    function calculateOptimalPricing(profitMargins, labels, salesData, totalCost) {
+        try {
+            // Find the maximum profit point
+            const maxProfitIndex = profitMargins.indexOf(Math.max(...profitMargins));
+            const optimalPrice = parseFloat(labels[maxProfitIndex].replace('$', ''));
+            const optimalTotalProfit = profitMargins[maxProfitIndex];
+            const optimalUnitsSold = salesData[maxProfitIndex];
+            
+            // Calculate profit margin percentage
+            const optimalProfitMargin = ((optimalPrice - totalCost) / optimalPrice) * 100;
+            
+            // Update the display
+            document.getElementById('optimal-price').textContent = `$${optimalPrice.toFixed(2)}`;
+            document.getElementById('optimal-profit-margin').textContent = `${optimalProfitMargin.toFixed(1)}%`;
+            document.getElementById('optimal-units-sold').textContent = Math.round(optimalUnitsSold);
+            document.getElementById('optimal-total-profit').textContent = `$${optimalTotalProfit.toFixed(2)}`;
+            
+            console.log('Optimal pricing calculated:', {
+                price: optimalPrice,
+                profitMargin: optimalProfitMargin,
+                unitsSold: optimalUnitsSold,
+                totalProfit: optimalTotalProfit
+            });
+            
+        } catch (error) {
+            console.error('Error calculating optimal pricing:', error);
+        }
+    }
+    
+    // Get sales data from inputs
+    function getSalesData() {
+        const salesPrices = document.querySelectorAll('.sales-price');
+        const salesQuantities = document.querySelectorAll('.sales-quantity');
+        const salesData = [];
+        
+        for (let i = 0; i < salesPrices.length; i++) {
+            const price = parseFloat(salesPrices[i].value) || 0;
+            const quantity = parseFloat(salesQuantities[i].value) || 0;
+            if (price > 0 && quantity > 0) {
+                salesData.push({ price: price, quantity: quantity });
+            }
+        }
+        
+        return salesData.sort((a, b) => a.price - b.price);
+    }
+    
+    // Update sales chart
+    function updateSalesChart() {
+        createPriceChart(); // Update the price chart to refresh the dual X-axis
+    }
+    
+    // Add new sales data point
+    function addSalesData() {
+        salesDataCounter++;
+        const container = document.getElementById('sales-data-container');
+        const currentIndex = container.children.length;
+        const newSalesData = document.createElement('div');
+        newSalesData.className = 'sales-row';
+        newSalesData.setAttribute('data-index', currentIndex);
+        newSalesData.innerHTML = `
+            <span class="sales-label">Data Point ${salesDataCounter}:</span>
+            <div class="sales-fields">
+                <div class="sales-field">
+                    <label>Price ($)</label>
+                    <input type="number" class="sales-price" placeholder="Price" step="0.01" onchange="updateSalesChart()">
+                </div>
+                <div class="sales-field">
+                    <label>Sales</label>
+                    <input type="number" class="sales-quantity" placeholder="Quantity" step="1" onchange="updateSalesChart()">
+                </div>
+                <button class="btn btn-sm btn-danger" onclick="removeSalesData(${currentIndex})" style="margin-left: 5px; align-self: flex-end;">×</button>
+            </div>
+        `;
+        container.appendChild(newSalesData);
+        updateSalesChart();
+    }
+    
+    // Remove specific sales data point
+    function removeSalesData(index) {
+        const container = document.getElementById('sales-data-container');
+        const salesRows = container.getElementsByClassName('sales-row');
+        
+        if (salesRows.length > 1) { // Keep at least one data point
+            // Remove the specific data point
+            container.removeChild(salesRows[index]);
+            salesDataCounter--;
+            
+            // Update indices and labels for remaining data points
+            const remainingRows = container.getElementsByClassName('sales-row');
+            for (let i = 0; i < remainingRows.length; i++) {
+                const salesRow = remainingRows[i];
+                salesRow.setAttribute('data-index', i);
+                salesRow.querySelector('.sales-label').textContent = `Data Point ${i + 1}:`;
+                salesRow.querySelector('.btn-danger').setAttribute('onclick', `removeSalesData(${i})`);
+            }
+            
+            updateSalesChart();
+        } else {
+            alert('You must keep at least one sales data point!');
+        }
+    }
+    
+    // Calculate total cost
+    function calculateTotal() {
+        let ingredientTotal = 0;
+        const ingredientCosts = document.querySelectorAll('.ingredient-cost');
+        const ingredientAmounts = document.querySelectorAll('.ingredient-amount');
+        
+        console.log('Calculating total cost...');
+        console.log('Found', ingredientCosts.length, 'ingredient cost inputs');
+        
+        for (let i = 0; i < ingredientCosts.length; i++) {
+            const cost = parseFloat(ingredientCosts[i].value) || 0;
+            const amount = parseFloat(ingredientAmounts[i].value) || 0;
+            ingredientTotal += cost * amount;
+            console.log(`Ingredient ${i + 1}: cost=${cost}, amount=${amount}, subtotal=${cost * amount}`);
+        }
+        
+        const laborCost = parseFloat(document.getElementById('labor-cost').value) || 0;
+        const overheadCost = parseFloat(document.getElementById('overhead-cost').value) || 0;
+        const totalCost = ingredientTotal + laborCost + overheadCost;
+        
+        console.log('Cost breakdown:', {
+            ingredientTotal: ingredientTotal,
+            laborCost: laborCost,
+            overheadCost: overheadCost,
+            totalCost: totalCost
+        });
+        
+        // Update display
+        document.getElementById('ingredient-total').textContent = `$${ingredientTotal.toFixed(2)}`;
+        document.getElementById('labor-total').textContent = `$${laborCost.toFixed(2)}`;
+        document.getElementById('overhead-total').textContent = `$${overheadCost.toFixed(2)}`;
+        document.getElementById('total-cost').textContent = `$${totalCost.toFixed(2)}`;
+        
+        return totalCost;
+    }
+    
+    // Calculate suggested price based on profit margin
+    function calculatePrice() {
+        const totalCost = parseFloat(document.getElementById('total-cost').textContent.replace('$', '')) || 0;
+        const profitMargin = parseFloat(document.getElementById('profit-margin').value) || 0;
+        
+        if (profitMargin >= 100) {
+            document.getElementById('suggested-price').textContent = 'Invalid margin';
+            return;
+        }
+        
+        const suggestedPrice = totalCost / (1 - profitMargin / 100);
+        document.getElementById('suggested-price').textContent = `$${suggestedPrice.toFixed(2)}`;
+        
+        // Update actual price if it's 0
+        const actualPrice = document.getElementById('actual-price');
+        if (parseFloat(actualPrice.value) === 0) {
+            actualPrice.value = suggestedPrice.toFixed(2);
+            calculateActualProfit();
+        }
+    }
+    
+    // Calculate actual profit based on set price
+    function calculateActualProfit() {
+        const totalCost = parseFloat(document.getElementById('total-cost').textContent.replace('$', '')) || 0;
+        const actualPrice = parseFloat(document.getElementById('actual-price').value) || 0;
+        
+        if (actualPrice === 0) {
+            document.getElementById('profit-per-dish').textContent = '$0.00';
+            document.getElementById('actual-profit-margin').textContent = '0%';
+            document.getElementById('cost-percentage').textContent = '0%';
+            return;
+        }
+        
+        const profitPerDish = actualPrice - totalCost;
+        const actualProfitMargin = (profitPerDish / actualPrice) * 100;
+        const costPercentage = (totalCost / actualPrice) * 100;
+        
+        document.getElementById('profit-per-dish').textContent = `$${profitPerDish.toFixed(2)}`;
+        document.getElementById('actual-profit-margin').textContent = `${actualProfitMargin.toFixed(1)}%`;
+        document.getElementById('cost-percentage').textContent = `${costPercentage.toFixed(1)}%`;
+        
+        // Color coding for profit margin
+        const profitMarginElement = document.getElementById('actual-profit-margin');
+        if (actualProfitMargin >= 30) {
+            profitMarginElement.style.color = '#28a745'; // Green for good margin
+        } else if (actualProfitMargin >= 15) {
+            profitMarginElement.style.color = '#ffc107'; // Yellow for moderate margin
+        } else {
+            profitMarginElement.style.color = '#dc3545'; // Red for low margin
+        }
+    }
+    
+    // Add new ingredient
+    function addIngredient() {
+        ingredientCounter++;
+        const container = document.getElementById('ingredients-container');
+        const currentIndex = container.children.length;
+        const newIngredient = document.createElement('div');
+        newIngredient.className = 'ingredient-row';
+        newIngredient.setAttribute('data-index', currentIndex);
+        newIngredient.innerHTML = `
+            <span class="ingredient-label">Ingredient ${ingredientCounter}:</span>
+            <div class="ingredient-fields">
+                <div class="ingredient-field">
+                    <label>Name</label>
+                    <input type="text" class="ingredient-name" placeholder="Ingredient Name" onchange="calculateTotal()">
+                </div>
+                <div class="ingredient-field">
+                    <label>Cost ($)</label>
+                    <input type="number" class="ingredient-cost" placeholder="Cost ($)" step="0.01" onchange="calculateTotal()">
+                </div>
+                <div class="ingredient-field">
+                    <label>Amount</label>
+                    <input type="number" class="ingredient-amount" placeholder="Amount" step="0.01" onchange="calculateTotal()">
+                </div>
+                <div class="ingredient-field">
+                    <label>Unit</label>
+                    <select class="ingredient-unit" onchange="calculateTotal()">
+                        <option value="lbs">lbs</option>
+                        <option value="oz">oz</option>
+                        <option value="g">g</option>
+                        <option value="cups">cups</option>
+                        <option value="tbsp">tbsp</option>
+                        <option value="tsp">tsp</option>
+                        <option value="each">each</option>
+                    </select>
+                </div>
+                <button class="btn btn-sm btn-danger" onclick="removeIngredient(${currentIndex})" style="margin-left: 5px; align-self: flex-end;">×</button>
+            </div>
+        `;
+        container.appendChild(newIngredient);
+        updateAllCalculations();
+    }
+    
+    // Remove specific ingredient
+    function removeIngredient(index) {
+        const container = document.getElementById('ingredients-container');
+        const ingredients = container.getElementsByClassName('ingredient-row');
+        
+        if (ingredients.length > 1) { // Keep at least one ingredient
+            // Remove the specific ingredient
+            container.removeChild(ingredients[index]);
+            ingredientCounter--;
+            
+            // Update indices and labels for remaining ingredients
+            const remainingIngredients = container.getElementsByClassName('ingredient-row');
+            for (let i = 0; i < remainingIngredients.length; i++) {
+                const ingredientRow = remainingIngredients[i];
+                ingredientRow.setAttribute('data-index', i);
+                ingredientRow.querySelector('.ingredient-label').textContent = `Ingredient ${i + 1}:`;
+                ingredientRow.querySelector('.btn-danger').setAttribute('onclick', `removeIngredient(${i})`);
+            }
+            
+            updateAllCalculations();
+        } else {
+            alert('You must keep at least one ingredient!');
+        }
+    }
+    
+    // Update all calculations
+    function updateAllCalculations() {
+        calculateTotal();
+        calculatePrice();
+        calculateActualProfit();
+        createPriceChart();
+    }
+    
+    // Check if Chart.js is loaded
+    function waitForChartJS(callback, maxAttempts = 10) {
+        let attempts = 0;
+        
+        function checkChartJS() {
+            attempts++;
+            if (typeof Chart !== 'undefined') {
+                console.log('Chart.js loaded successfully');
+                callback();
+            } else if (attempts < maxAttempts) {
+                console.log(`Chart.js not loaded yet, attempt ${attempts}/${maxAttempts}`);
+                setTimeout(checkChartJS, 300);
+            } else {
+                console.error('Chart.js failed to load after multiple attempts');
+                // Still run the calculator without the chart
+                calculateTotal();
+                calculatePrice();
+                calculateActualProfit();
+            }
+        }
+        
+        checkChartJS();
+    }
+    
+    // Initialize the calculator when the page loads
+    window.onload = function() {
+        // Run basic calculations immediately
+        calculateTotal();
+        calculatePrice();
+        calculateActualProfit();
+        
+        // Then wait for Chart.js and create the chart
+        waitForChartJS(function() {
+            createPriceChart();
+        });
+    };
+</script>
+
+<style>
+    .ingredient-row {
+        margin-bottom: 18px;
+    }
+    .ingredient-fields {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        margin-top: 4px;
+    }
+    .ingredient-field {
+        display: flex;
+        flex-direction: column;
+        min-width: 90px;
+    }
+    .ingredient-label {
+        min-width: 100px;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 2px;
+    }
+    .ingredient-name {
+        width: 120px;
+        padding: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    .ingredient-cost, .ingredient-amount {
+        width: 80px;
+        padding: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    .ingredient-unit {
+        width: 70px;
+        padding: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    #cost-breakdown div, #profit-analysis div {
+        padding: 3px 0;
+    }
+    hr {
+        border: none;
+        border-top: 1px solid #dee2e6;
+    }
+    #priceChart, #optimalPriceChart {
+        height: 300px !important;
+        width: 100% !important;
+        max-width: 100%;
+        display: block;
+    }
+    
+    .chart-container {
+        position: relative;
+        height: 300px;
+        width: 100%;
+        background-color: #f8f9fa;
+        border: 2px solid #dee2e6;
+        border-radius: 4px;
+    }
+    
+    #priceChart {
+        background-color: white;
+        border: 1px solid #ccc;
+    }
+    
+    .sales-row {
+        margin-bottom: 18px;
+    }
+    .sales-fields {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        margin-top: 4px;
+    }
+    .sales-field {
+        display: flex;
+        flex-direction: column;
+        min-width: 90px;
+    }
+    .sales-label {
+        min-width: 100px;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 2px;
+    }
+    .sales-price, .sales-quantity {
+        width: 80px;
+        padding: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+</style>
+{% endblock %} 

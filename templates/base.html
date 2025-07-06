@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Flask App{% endblock %}</title>
+    {% block head %}{% endblock %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 200px;
+            background-color: #2c3e50;
+            padding: 20px 10px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .nav-button {
+            display: block;
+            width: 80%;
+            margin: 10px auto;
+            padding: 12px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .nav-button.active {
+            background-color: #e74c3c;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        
+        .page-title {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .points-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .points-title {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .point-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+        
+        .point-label {
+            min-width: 80px;
+            font-weight: bold;
+        }
+        
+        .point-input {
+            width: 80px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .btn {
+            margin-right: 5px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="{{ url_for('home') }}" class="nav-button {% if request.endpoint == 'home' %}active{% endif %}">Dish Price Calculator</a>
+        
+        <div style="margin: 20px 10px 10px 10px; padding: 8px; background-color: #34495e; border-radius: 4px; text-align: center;">
+            <span style="color: #bdc3c7; font-size: 12px; font-weight: bold; text-transform: uppercase;">Other Charts</span>
+        </div>
+        
+        <a href="{{ url_for('page1') }}" class="nav-button {% if request.endpoint == 'page1' %}active{% endif %}">Optimal Table Turnover</a>
+        <a href="{{ url_for('page2') }}" class="nav-button {% if request.endpoint == 'page2' %}active{% endif %}">Price Sensitivity</a>
+        <a href="{{ url_for('page3') }}" class="nav-button {% if request.endpoint == 'page3' %}active{% endif %}">Optimal Advertising Budget</a>
+        <a href="{{ url_for('page4') }}" class="nav-button {% if request.endpoint == 'page4' %}active{% endif %}">Max Acceptable Wait Time</a>
+    </div>
+    
+    <div class="main-content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html> 
