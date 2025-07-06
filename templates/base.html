@@ -140,8 +140,12 @@
 </head>
 <body>
     <div class="sidebar">
+        <div style="margin: 20px 10px 20px 10px; padding: 8px; background-color: #34495e; border-radius: 4px; text-align: center;">
+            <span style="color: #bdc3c7; font-size: 12px; font-weight: bold; text-transform: uppercase;">Calculators</span>
+        </div>
         <a href="{{ url_for('home') }}" class="nav-button {% if request.endpoint == 'home' %}active{% endif %}">Dish Price Calculator</a>
         
+        <!-- Other navigation buttons commented out
         <div style="margin: 20px 10px 10px 10px; padding: 8px; background-color: #34495e; border-radius: 4px; text-align: center;">
             <span style="color: #bdc3c7; font-size: 12px; font-weight: bold; text-transform: uppercase;">Other Charts</span>
         </div>
@@ -150,6 +154,7 @@
         <a href="{{ url_for('page2') }}" class="nav-button {% if request.endpoint == 'page2' %}active{% endif %}">Price Sensitivity</a>
         <a href="{{ url_for('page3') }}" class="nav-button {% if request.endpoint == 'page3' %}active{% endif %}">Optimal Advertising Budget</a>
         <a href="{{ url_for('page4') }}" class="nav-button {% if request.endpoint == 'page4' %}active{% endif %}">Max Acceptable Wait Time</a>
+        -->
     </div>
     
     <div class="main-content">

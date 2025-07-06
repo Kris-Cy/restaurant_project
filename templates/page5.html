@@ -41,15 +41,15 @@
                 <div class="ingredient-fields">
                     <div class="ingredient-field">
                         <label>Name</label>
-                        <input type="text" class="ingredient-name" placeholder="Ingredient Name" value="Ground Beef">
+                        <input type="text" class="ingredient-name" placeholder="Ingredient Name" value="Beef">
                     </div>
                     <div class="ingredient-field">
                         <label>Cost ($)</label>
-                        <input type="number" class="ingredient-cost" placeholder="Cost ($)" value="8.50" step="0.01" onchange="updateAllCalculations()">
+                        <input type="number" class="ingredient-cost" placeholder="Cost ($)" value="15.99" step="0.01" onchange="updateAllCalculations()">
                     </div>
                     <div class="ingredient-field">
                         <label>Amount</label>
-                        <input type="number" class="ingredient-amount" placeholder="Amount" value="0.25" step="0.01" onchange="updateAllCalculations()">
+                        <input type="number" class="ingredient-amount" placeholder="Amount" value="0.4" step="0.01" onchange="updateAllCalculations()">
                     </div>
                     <div class="ingredient-field">
                         <label>Unit</label>
@@ -71,26 +71,26 @@
                 <div class="ingredient-fields">
                     <div class="ingredient-field">
                         <label>Name</label>
-                        <input type="text" class="ingredient-name" placeholder="Ingredient Name" value="Bun">
+                        <input type="text" class="ingredient-name" placeholder="Ingredient Name" value="Noodles">
                     </div>
                     <div class="ingredient-field">
                         <label>Cost ($)</label>
-                        <input type="number" class="ingredient-cost" placeholder="Cost ($)" value="0.50" step="0.01" onchange="updateAllCalculations()">
+                        <input type="number" class="ingredient-cost" placeholder="Cost ($)" value="2.49" step="0.01" onchange="updateAllCalculations()">
                     </div>
                     <div class="ingredient-field">
                         <label>Amount</label>
-                        <input type="number" class="ingredient-amount" placeholder="Amount" value="1" step="0.01" onchange="updateAllCalculations()">
+                        <input type="number" class="ingredient-amount" placeholder="Amount" value="0.3" step="0.01" onchange="updateAllCalculations()">
                     </div>
                     <div class="ingredient-field">
                         <label>Unit</label>
                         <select class="ingredient-unit" onchange="updateAllCalculations()">
-                            <option value="each">each</option>
                             <option value="lbs">lbs</option>
                             <option value="oz">oz</option>
                             <option value="g">g</option>
                             <option value="cups">cups</option>
                             <option value="tbsp">tbsp</option>
                             <option value="tsp">tsp</option>
+                            <option value="each">each</option>
                         </select>
                     </div>
                     <button class="btn btn-sm btn-danger" onclick="removeIngredient(1)" style="margin-left: 5px; align-self: flex-end;">×</button>
@@ -101,15 +101,15 @@
                 <div class="ingredient-fields">
                     <div class="ingredient-field">
                         <label>Name</label>
-                        <input type="text" class="ingredient-name" placeholder="Ingredient Name" value="Cheese">
+                        <input type="text" class="ingredient-name" placeholder="Ingredient Name" value="Vegetables">
                     </div>
                     <div class="ingredient-field">
                         <label>Cost ($)</label>
-                        <input type="number" class="ingredient-cost" placeholder="Cost ($)" value="4.00" step="0.01" onchange="updateAllCalculations()">
+                        <input type="number" class="ingredient-cost" placeholder="Cost ($)" value="3.99" step="0.01" onchange="updateAllCalculations()">
                     </div>
                     <div class="ingredient-field">
                         <label>Amount</label>
-                        <input type="number" class="ingredient-amount" placeholder="Amount" value="0.125" step="0.01" onchange="updateAllCalculations()">
+                        <input type="number" class="ingredient-amount" placeholder="Amount" value="0.2" step="0.01" onchange="updateAllCalculations()">
                     </div>
                     <div class="ingredient-field">
                         <label>Unit</label>
@@ -134,15 +134,15 @@
             <h4 style="margin-top: 0;">Dish Information</h4>
             <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
                 <label style="min-width: 120px;">Dish Name:</label>
-                <input type="text" id="dish-name" value="Classic Burger" style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                <input type="text" id="dish-name" value="Beef Stir-Fry" style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
             </div>
             <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
                 <label style="min-width: 120px;">Labor Cost ($):</label>
-                <input type="number" id="labor-cost" value="2.50" step="0.01" onchange="updateAllCalculations()" style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                <input type="number" id="labor-cost" value="4.25" step="0.01" onchange="updateAllCalculations()" style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
             </div>
             <div style="display: flex; gap: 10px; align-items: center;">
                 <label style="min-width: 120px;">Overhead Cost ($):</label>
-                <input type="number" id="overhead-cost" value="1.00" step="0.01" onchange="updateAllCalculations()" style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                <input type="number" id="overhead-cost" value="2.15" step="0.01" onchange="updateAllCalculations()" style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
             </div>
         </div>
         
@@ -153,49 +153,60 @@
             
             <div id="sales-data-container">
                 <div class="sales-row" data-index="0">
-                    <span class="sales-label">Data Point 1:</span>
+                    <span class="sales-label">Price Point 1:</span>
                     <div class="sales-fields">
                         <div class="sales-field">
                             <label>Price ($)</label>
-                            <input type="number" class="sales-price" placeholder="Price" value="8.00" step="0.01" onchange="updateSalesChart()">
+                            <input type="number" class="sales-price" placeholder="Price" value="14.00" step="0.01" onchange="updateSalesChart()">
                         </div>
                         <div class="sales-field">
                             <label>Sales</label>
-                            <input type="number" class="sales-quantity" placeholder="Quantity" value="45" step="1" onchange="updateSalesChart()">
+                            <input type="number" class="sales-quantity" placeholder="Quantity" value="28" step="1" onchange="updateSalesChart()">
                         </div>
                         <button class="btn btn-sm btn-danger" onclick="removeSalesData(0)" style="margin-left: 5px; align-self: flex-end;">×</button>
                     </div>
                 </div>
                 <div class="sales-row" data-index="1">
-                    <span class="sales-label">Data Point 2:</span>
+                    <span class="sales-label">Price Point 2:</span>
                     <div class="sales-fields">
                         <div class="sales-field">
                             <label>Price ($)</label>
-                            <input type="number" class="sales-price" placeholder="Price" value="10.00" step="0.01" onchange="updateSalesChart()">
+                            <input type="number" class="sales-price" placeholder="Price" value="16.00" step="0.01" onchange="updateSalesChart()">
                         </div>
                         <div class="sales-field">
                             <label>Sales</label>
-                            <input type="number" class="sales-quantity" placeholder="Quantity" value="35" step="1" onchange="updateSalesChart()">
+                            <input type="number" class="sales-quantity" placeholder="Quantity" value="22" step="1" onchange="updateSalesChart()">
                         </div>
                         <button class="btn btn-sm btn-danger" onclick="removeSalesData(1)" style="margin-left: 5px; align-self: flex-end;">×</button>
                     </div>
                 </div>
                 <div class="sales-row" data-index="2">
-                    <span class="sales-label">Data Point 3:</span>
+                    <span class="sales-label">Price Point 3:</span>
                     <div class="sales-fields">
                         <div class="sales-field">
                             <label>Price ($)</label>
-                            <input type="number" class="sales-price" placeholder="Price" value="12.00" step="0.01" onchange="updateSalesChart()">
+                            <input type="number" class="sales-price" placeholder="Price" value="18.00" step="0.01" onchange="updateSalesChart()">
                         </div>
                         <div class="sales-field">
                             <label>Sales</label>
-                            <input type="number" class="sales-quantity" placeholder="Quantity" value="25" step="1" onchange="updateSalesChart()">
+                            <input type="number" class="sales-quantity" placeholder="Quantity" value="15" step="1" onchange="updateSalesChart()">
                         </div>
                         <button class="btn btn-sm btn-danger" onclick="removeSalesData(2)" style="margin-left: 5px; align-self: flex-end;">×</button>
                     </div>
                 </div>
             </div>
             <button class="btn btn-success" onclick="addSalesData()">+ Add Sales Data</button>
+        </div>
+        
+        <!-- Dish Management Buttons -->
+        <div style="margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+            <h4 style="margin-top: 0; color: #333;">Dish Management</h4>
+            <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Save your current dish configuration or load a previously saved dish</p>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-primary" onclick="saveDish()">💾 Save Dish</button>
+                <button class="btn btn-info" onclick="loadDish()">📂 Load Dish</button>
+                <button class="btn btn-warning" onclick="clearAllData()">🗑️ Clear All Data</button>
+            </div>
         </div>
     </div>
     
@@ -227,9 +238,42 @@
             </div>
         </div>
         
+        <!-- Price vs Profit Margin Chart -->
+        <div style="background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6; margin-bottom: 20px;">
+            <h4 style="margin-top: 0; color: #333;">Price vs Profit Margin</h4>
+            <p style="color: #666; font-size: 14px; margin-bottom: 15px;">See how the suggested price changes across different profit margins</p>
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Optimal Pricing Analysis -->
+        <div style="background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6; margin-bottom: 20px;">
+            <h4 style="margin-top: 0; color: #333;">Optimal Pricing Analysis</h4>
+            <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Based on your cost structure and sales data</p>
+            <div id="optimal-pricing" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                <div style="text-align: center; padding: 15px; background-color: #f8f9fa; border-radius: 6px;">
+                    <div style="font-size: 12px; color: #666; margin-bottom: 5px;">OPTIMAL PRICE</div>
+                    <div id="optimal-price" style="font-size: 24px; font-weight: bold; color: #28a745;">$0.00</div>
+                </div>
+                <div style="text-align: center; padding: 15px; background-color: #f8f9fa; border-radius: 6px;">
+                    <div style="font-size: 12px; color: #666; margin-bottom: 5px;">PROFIT MARGIN</div>
+                    <div id="optimal-profit-margin" style="font-size: 24px; font-weight: bold; color: #007bff;">0%</div>
+                </div>
+                <div style="text-align: center; padding: 15px; background-color: #f8f9fa; border-radius: 6px;">
+                    <div style="font-size: 12px; color: #666; margin-bottom: 5px;">PROJECTED DAILY SALES</div>
+                    <div id="optimal-units-sold" style="font-size: 24px; font-weight: bold; color: #dc3545;">0</div>
+                </div>
+            </div>
+            <div style="margin-top: 15px; padding: 10px; background-color: #e8f5e8; border-radius: 6px; border-left: 4px solid #28a745;">
+                <div style="font-weight: bold; color: #28a745; margin-bottom: 5px;">Projected Daily Profit at Optimal Price:</div>
+                <div id="optimal-total-profit" style="font-size: 18px; font-weight: bold; color: #28a745;">$0.00</div>
+            </div>
+        </div>
+        
         <!-- Pricing Calculator -->
         <div style="background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6; margin-bottom: 20px;">
-            <h4 style="margin-top: 0; color: #333;">Pricing Calculator</h4>
+            <h4 style="margin-top: 0; color: #333;">Alternate Pricing Calculator</h4>
             <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
                 <label style="min-width: 120px;">Desired Profit Margin (%):</label>
                 <input type="number" id="profit-margin" value="30" min="0" max="100" onchange="updateAllCalculations()" style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
@@ -263,39 +307,6 @@
             </div>
         </div>
         
-        <!-- Price vs Profit Margin Chart -->
-        <div style="background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6; margin-bottom: 20px;">
-            <h4 style="margin-top: 0; color: #333;">Price vs Profit Margin</h4>
-            <p style="color: #666; font-size: 14px; margin-bottom: 15px;">See how the suggested price changes across different profit margins</p>
-            <div class="chart-container">
-                <canvas id="priceChart"></canvas>
-            </div>
-        </div>
-        
-        <!-- Optimal Pricing Analysis -->
-        <div style="background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6; margin-bottom: 20px;">
-            <h4 style="margin-top: 0; color: #333;">Optimal Pricing Analysis</h4>
-            <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Based on your cost structure and sales data</p>
-            <div id="optimal-pricing" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
-                <div style="text-align: center; padding: 15px; background-color: #f8f9fa; border-radius: 6px;">
-                    <div style="font-size: 12px; color: #666; margin-bottom: 5px;">OPTIMAL PRICE</div>
-                    <div id="optimal-price" style="font-size: 24px; font-weight: bold; color: #28a745;">$0.00</div>
-                </div>
-                <div style="text-align: center; padding: 15px; background-color: #f8f9fa; border-radius: 6px;">
-                    <div style="font-size: 12px; color: #666; margin-bottom: 5px;">PROFIT MARGIN</div>
-                    <div id="optimal-profit-margin" style="font-size: 24px; font-weight: bold; color: #007bff;">0%</div>
-                </div>
-                <div style="text-align: center; padding: 15px; background-color: #f8f9fa; border-radius: 6px;">
-                    <div style="font-size: 12px; color: #666; margin-bottom: 5px;">PROJECTED SALES</div>
-                    <div id="optimal-units-sold" style="font-size: 24px; font-weight: bold; color: #dc3545;">0</div>
-                </div>
-            </div>
-            <div style="margin-top: 15px; padding: 10px; background-color: #e8f5e8; border-radius: 6px; border-left: 4px solid #28a745;">
-                <div style="font-weight: bold; color: #28a745; margin-bottom: 5px;">Projected Profit at Optimal Price:</div>
-                <div id="optimal-total-profit" style="font-size: 18px; font-weight: bold; color: #28a745;">$0.00</div>
-            </div>
-        </div>
-        
 
         
         <div id="status-message" style="margin-top: 10px; padding: 10px; border-radius: 4px; display: none;"></div>
@@ -306,6 +317,7 @@
     let ingredientCounter = 3; // Start with 3 ingredients
     let priceChart = null; // Global variable for the chart
     let salesDataCounter = 3; // Start with 3 sales data points
+    let savedDishes = []; // Demo mode - dishes are only saved for current session
     
     // Create price vs profit margin chart
     function createPriceChart() {
@@ -342,10 +354,13 @@
                 return;
             }
             
-            // Generate price range and calculate profit margins
-            const minPrice = totalCost; // Start at the total cost (break-even point)
-            const maxPrice = totalCost * 4; // Go up to 400% of cost for better visibility
-            const priceStep = (maxPrice - minPrice) / 25; // 25 data points for smoother curve
+            // Generate price range with whole dollar amounts for axis labels
+            const minPrice = Math.floor(totalCost); // Start at whole dollar amount at or below cost
+            let maxPrice = Math.ceil(totalCost * 3); // Default: End at whole dollar amount at or above 300% of cost
+            
+            // Generate more data points for smooth hovering (every $0.25)
+            const priceStep = 0.25; // Smaller intervals for smooth hovering
+            let numPoints = Math.floor((maxPrice - minPrice) / priceStep) + 1; // More data points
             
             // Get sales data from the form inputs first
             const salesPrices = document.querySelectorAll('.sales-price');
@@ -380,74 +395,132 @@
             }
             console.log('Actual profit data:', actualProfitData);
             
-            for (let i = 0; i <= 25; i++) {
-                const price = minPrice + (i * priceStep);
+            for (let i = 0; i < numPoints; i++) {
+                const price = minPrice + (i * priceStep); // Smaller increments for smooth hovering
                 let predictedSales;
                 
                 try {
-                    if (actualSalesData.length >= 2) {
-                        // Exponential decay regression: units sold decreases exponentially with price
-                        const n = actualSalesData.length;
-                        
-                        // Find the maximum sales and minimum price as reference points
-                        const maxSales = Math.max(...actualSalesData);
-                        const minPrice = Math.min(...actualSalesPrices);
-                        
-                        // Calculate exponential decay parameters
-                        let totalError = 0;
-                        let bestDecayRate = 0.1; // Start with a reasonable decay rate
-                        
-                        // Try different decay rates to find the best fit
-                        for (let decayRate = 0.05; decayRate <= 0.5; decayRate += 0.01) {
-                            let error = 0;
-                            for (let j = 0; j < n; j++) {
-                                const expectedSales = maxSales * Math.exp(-decayRate * (actualSalesPrices[j] - minPrice));
-                                error += Math.abs(expectedSales - actualSalesData[j]);
-                            }
-                            if (error < totalError || totalError === 0) {
-                                totalError = error;
-                                bestDecayRate = decayRate;
-                            }
-                        }
-                        
-                        // Use exponential decay to predict sales
-                        predictedSales = Math.max(0, maxSales * Math.exp(-bestDecayRate * (price - minPrice)));
-                        console.log(`Price $${price.toFixed(2)}: Predicted sales = ${predictedSales.toFixed(1)} (decay rate: ${bestDecayRate.toFixed(3)})`);
-                        
+                    if (actualSalesData.length >= 3) {
+                        // 3+ data points - use exponential decay regression
+                        predictedSales = fitExponentialDecay(price, actualSalesPrices, actualSalesData);
+                    } else if (actualSalesData.length === 2) {
+                        // 2 data points - use linear regression
+                        predictedSales = fitLinearRegression(price, actualSalesPrices, actualSalesData);
                     } else if (actualSalesData.length === 1) {
-                        // Single data point - use exponential decay from reference
+                        // Single data point - no regression line, just use the data point
                         const referencePrice = actualSalesPrices[0];
                         const referenceSales = actualSalesData[0];
-                        const priceDiff = price - referencePrice;
-                        // Exponential decay: sales decrease exponentially with price increase
-                        const decayRate = 0.15; // Reasonable decay rate
-                        predictedSales = Math.max(0, referenceSales * Math.exp(-decayRate * priceDiff));
+                        if (Math.abs(price - referencePrice) < 0.01) {
+                            predictedSales = referenceSales; // Exact match
+                        } else {
+                            predictedSales = null; // No prediction for other prices
+                        }
                     } else {
-                        // No sales data - use exponential decay curve
-                        const baseSales = 100;
-                        const priceDiff = price - minPrice;
-                        const decayRate = 0.1;
-                        predictedSales = Math.max(5, baseSales * Math.exp(-decayRate * priceDiff));
+                        // No sales data - no regression line
+                        predictedSales = null;
                     }
                 } catch (error) {
                     console.error('Error calculating predicted sales:', error);
-                    // Fallback to exponential decay estimation
-                    const baseSales = 100;
-                    const priceDiff = price - minPrice;
-                    const decayRate = 0.1;
-                    predictedSales = Math.max(5, baseSales * Math.exp(-decayRate * priceDiff));
+                    // Fallback to no prediction
+                    predictedSales = null;
                 }
                 
-                extendedSalesData.push(predictedSales);
+                if (predictedSales !== null) {
+                    extendedSalesData.push(predictedSales);
+                } else {
+                    extendedSalesData.push(0); // Use 0 for null values to maintain array length
+                }
             }
             
             console.log('Extended sales data:', extendedSalesData);
             
+            // If we have sales regression data, find where it hits 0 and adjust the chart range
+            if (actualSalesData.length >= 2) {
+                let salesZeroPrice = maxPrice; // Default to current max price
+                
+                if (actualSalesData.length >= 3) {
+                    // For exponential decay, find where sales = 0
+                    const maxSales = Math.max(...actualSalesData);
+                    const minActualPrice = Math.min(...actualSalesPrices);
+                    
+                    // Find best decay rate first
+                    let totalError = 0;
+                    let bestDecayRate = 0.1;
+                    for (let decayRate = 0.01; decayRate <= 1.0; decayRate += 0.01) {
+                        let error = 0;
+                        for (let j = 0; j < actualSalesPrices.length; j++) {
+                            const expectedSales = maxSales * Math.exp(-decayRate * (actualSalesPrices[j] - minActualPrice));
+                            error += Math.abs(expectedSales - actualSalesData[j]);
+                        }
+                        if (error < totalError || totalError === 0) {
+                            totalError = error;
+                            bestDecayRate = decayRate;
+                        }
+                    }
+                    
+                    // Find where sales = 0 (or very close to 0)
+                    // Using 0.1 as threshold to avoid ln(0)
+                    if (maxSales > 0.1) {
+                        salesZeroPrice = minActualPrice - Math.log(0.1 / maxSales) / bestDecayRate;
+                    }
+                    
+                } else if (actualSalesData.length === 2) {
+                    // For linear regression, find where y = 0
+                    const x1 = actualSalesPrices[0];
+                    const y1 = actualSalesData[0];
+                    const x2 = actualSalesPrices[1];
+                    const y2 = actualSalesData[1];
+                    
+                    const slope = (y2 - y1) / (x2 - x1);
+                    const intercept = y1 - slope * x1;
+                    
+                    // Find where y = 0: 0 = slope * x + intercept
+                    // x = -intercept / slope
+                    if (slope !== 0 && slope < 0) { // Only if slope is negative (sales decrease with price)
+                        salesZeroPrice = -intercept / slope;
+                    }
+                }
+                
+                // Use the smaller of current max price or where sales hits 0
+                const newMaxPrice = Math.min(maxPrice, Math.ceil(salesZeroPrice));
+                if (newMaxPrice > minPrice) {
+                    maxPrice = newMaxPrice;
+                    numPoints = Math.floor((maxPrice - minPrice) / priceStep) + 1;
+                    console.log(`Adjusted max price to $${maxPrice} where sales hits 0`);
+                    
+                    // Regenerate sales data with new price range
+                    extendedSalesData.length = 0; // Clear the array
+                    for (let i = 0; i < numPoints; i++) {
+                        const price = minPrice + (i * priceStep);
+                        let predictedSales;
+                        
+                        try {
+                            if (actualSalesData.length >= 3) {
+                                predictedSales = fitExponentialDecay(price, actualSalesPrices, actualSalesData);
+                            } else if (actualSalesData.length === 2) {
+                                predictedSales = fitLinearRegression(price, actualSalesPrices, actualSalesData);
+                            } else {
+                                predictedSales = null;
+                            }
+                        } catch (error) {
+                            console.error('Error calculating predicted sales:', error);
+                            predictedSales = null;
+                        }
+                        
+                        if (predictedSales !== null) {
+                            extendedSalesData.push(predictedSales);
+                        } else {
+                            extendedSalesData.push(0);
+                        }
+                    }
+                }
+            }
+            
             const labels = [];
             const profitMargins = [];
             
-            for (let i = 0; i <= 25; i++) {
-                const price = minPrice + (i * priceStep);
+            for (let i = 0; i < numPoints; i++) {
+                const price = minPrice + (i * priceStep); // Smaller increments for smooth hovering
                 
                 // Calculate total profit with bowed-outwards curve
                 const baseProfit = price - totalCost;
@@ -471,7 +544,7 @@
                     profitMargins.push(0);
                 }
                 
-                labels.push(`$${price.toFixed(2)}`);
+                labels.push(`$${price}`);
             }
             
             console.log('Generated data:', labels, profitMargins);
@@ -482,6 +555,102 @@
             console.log('- Sample profit margins:', profitMargins.slice(0, 5));
             console.log('- Sample sales data:', extendedSalesData.slice(0, 5));
             
+            // Find optimal price index for highlighting
+            const maxProfitIndex = profitMargins.indexOf(Math.max(...profitMargins));
+            
+            // Create point radius array - only show point at optimal price
+            const profitPointRadius = profitMargins.map((_, index) => index === maxProfitIndex ? 6 : 0);
+            const salesPointRadius = extendedSalesData.map((_, index) => index === maxProfitIndex ? 6 : 0);
+            
+            // Create point color arrays - green for optimal profit point
+            const profitPointColors = profitMargins.map((_, index) => index === maxProfitIndex ? '#28a745' : '#007bff');
+            const salesPointColors = extendedSalesData.map((_, index) => index === maxProfitIndex ? '#dc3545' : '#dc3545');
+            
+            // Function to create array for actual sales data points
+            function createActualSalesDataArray(labels, actualPrices, actualSales) {
+                const dataArray = new Array(labels.length).fill(null);
+                
+                actualPrices.forEach((price, index) => {
+                    // Find the exact or closest label index for this price
+                    let labelIndex = labels.findIndex(label => {
+                        const labelPrice = parseFloat(label.replace('$', ''));
+                        return Math.abs(labelPrice - price) < 0.001; // Very small tolerance for exact match
+                    });
+                    
+                    // If no exact match, find the closest one
+                    if (labelIndex === -1) {
+                        let minDiff = Infinity;
+                        labels.forEach((label, i) => {
+                            const labelPrice = parseFloat(label.replace('$', ''));
+                            const diff = Math.abs(labelPrice - price);
+                            if (diff < minDiff) {
+                                minDiff = diff;
+                                labelIndex = i;
+                            }
+                        });
+                    }
+                    
+                    if (labelIndex !== -1) {
+                        dataArray[labelIndex] = actualSales[index];
+                    }
+                });
+                
+                return dataArray;
+            }
+            
+            // Function to fit exponential decay to actual data points
+            function fitExponentialDecay(price, actualPrices, actualSales) {
+                // Sort data points by price
+                const sortedData = actualPrices.map((p, i) => ({ price: p, sales: actualSales[i] }))
+                    .sort((a, b) => a.price - b.price);
+                
+                // Find the maximum sales and minimum price as reference points
+                const maxSales = Math.max(...actualSales);
+                const minPrice = Math.min(...actualPrices);
+                
+                // Calculate exponential decay parameters by fitting to actual data
+                let totalError = 0;
+                let bestDecayRate = 0.1; // Start with a reasonable decay rate
+                
+                // Try different decay rates to find the best fit to actual data
+                for (let decayRate = 0.01; decayRate <= 1.0; decayRate += 0.01) {
+                    let error = 0;
+                    for (let j = 0; j < actualPrices.length; j++) {
+                        const expectedSales = maxSales * Math.exp(-decayRate * (actualPrices[j] - minPrice));
+                        error += Math.abs(expectedSales - actualSales[j]);
+                    }
+                    if (error < totalError || totalError === 0) {
+                        totalError = error;
+                        bestDecayRate = decayRate;
+                    }
+                }
+                
+                // Use the fitted exponential decay to predict sales
+                const predictedSales = maxSales * Math.exp(-bestDecayRate * (price - minPrice));
+                console.log(`Price $${price.toFixed(2)}: Predicted sales = ${predictedSales.toFixed(1)} (decay rate: ${bestDecayRate.toFixed(3)})`);
+                
+                return Math.max(0, predictedSales);
+            }
+            
+            // Function to fit linear regression to 2 data points
+            function fitLinearRegression(price, actualPrices, actualSales) {
+                // For 2 points, calculate the slope and intercept
+                const x1 = actualPrices[0];
+                const y1 = actualSales[0];
+                const x2 = actualPrices[1];
+                const y2 = actualSales[1];
+                
+                // Calculate slope (m) and intercept (b) for y = mx + b
+                const slope = (y2 - y1) / (x2 - x1);
+                const intercept = y1 - slope * x1;
+                
+                // Predict sales using linear equation
+                const predictedSales = slope * price + intercept;
+                console.log(`Price $${price.toFixed(2)}: Predicted sales = ${predictedSales.toFixed(1)} (linear: y = ${slope.toFixed(3)}x + ${intercept.toFixed(3)})`);
+                
+                return Math.max(0, predictedSales);
+            }
+            
             // Create datasets with points on the lines
             const profitDataset = {
                 label: 'Profit($)',
@@ -491,9 +660,9 @@
                 borderWidth: 3,
                 fill: false,
                 tension: 0.1,
-                pointRadius: 4,
+                pointRadius: profitPointRadius,
                 pointHoverRadius: 6,
-                pointBackgroundColor: '#007bff',
+                pointBackgroundColor: profitPointColors,
                 pointBorderColor: '#ffffff',
                 pointBorderWidth: 2,
                 pointStyle: 'circle',
@@ -502,14 +671,14 @@
             };
             
             const salesDataset = {
-                label: 'Projected Units Sold',
+                label: 'Projected Daily Sales',
                 data: extendedSalesData,
                 borderColor: '#dc3545',
                 backgroundColor: 'rgba(220, 53, 69, 0.1)',
                 borderWidth: 2,
                 fill: false,
                 tension: 0.1,
-                pointRadius: 4,
+                pointRadius: salesPointRadius,
                 pointHoverRadius: 6,
                 pointBackgroundColor: '#dc3545',
                 pointBorderColor: '#ffffff',
@@ -519,12 +688,44 @@
                 yAxisID: 'y1'
             };
             
+            // Create dataset for actual sales data points
+            const actualSalesDataset = {
+                label: 'Actual Sales Data',
+                data: createActualSalesDataArray(labels, actualSalesPrices, actualSalesData),
+                borderColor: '#ffc107',
+                backgroundColor: '#ffc107',
+                borderWidth: 0,
+                fill: false,
+                tension: 0,
+                pointRadius: 5,
+                pointHoverRadius: 8,
+                pointBackgroundColor: '#ffc107',
+                pointBorderColor: '#ffffff',
+                pointBorderWidth: 2,
+                pointStyle: 'circle',
+                pointHitRadius: 10,
+                yAxisID: 'y1'
+            };
+            
+            // Prepare datasets array - always include profit dataset
+            const datasets = [profitDataset];
+            
+            // Only add sales regression line if there are 2 or more actual sales data points
+            if (actualSalesData.length >= 2) {
+                datasets.push(salesDataset);
+            }
+            
+            // Always add actual sales data points if they exist
+            if (actualSalesData.length > 0) {
+                datasets.push(actualSalesDataset);
+            }
+            
             // Create chart with just the lines (no points)
             priceChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: labels,
-                    datasets: [profitDataset, salesDataset]
+                    datasets: datasets
                 },
                 options: {
                     responsive: true,
@@ -537,12 +738,23 @@
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    if (context.dataset.label === 'Total Profit ($)') {
+                                    if (context.dataset.label === 'Profit($)') {
                                         return `Total Profit: $${context.parsed.y.toFixed(2)}`;
-                                                    } else if (context.dataset.label === 'Projected Units Sold') {
-                    return `Projected Sales: ${context.parsed.y.toFixed(0)}`;
+                                    } else if (context.dataset.label === 'Projected Daily Sales') {
+                                        return `Projected Daily Sales: ${context.parsed.y.toFixed(2)}`;
+                                    } else if (context.dataset.label === 'Actual Sales Data') {
+                                        // Get the actual price from the data array
+                                        const actualSalesDataArray = createActualSalesDataArray(labels, actualSalesPrices, actualSalesData);
+                                        const dataIndex = context.dataIndex;
+                                        // Find which actual sales data point this corresponds to
+                                        for (let i = 0; i < actualSalesPrices.length; i++) {
+                                            if (actualSalesDataArray[dataIndex] === actualSalesData[i]) {
+                                                return `Actual Sales: ${context.parsed.y.toFixed(2)} units at $${actualSalesPrices[i].toFixed(2)}`;
+                                            }
+                                        }
+                                        return `Actual Sales: ${context.parsed.y.toFixed(2)} units`;
                                     }
-                                    return context.dataset.label + ': ' + context.parsed.y;
+                                    return context.dataset.label + ': ' + context.parsed.y.toFixed(2);
                                 }
                             }
                         }
@@ -554,6 +766,16 @@
                                 text: 'Price ($)',
                                 font: {
                                     weight: 'bold'
+                                }
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    const price = parseFloat(this.getLabelForValue(value).replace('$', ''));
+                                    // Only show label if price is a whole dollar amount
+                                    if (Math.abs(price - Math.round(price)) < 0.01) {
+                                        return '$' + Math.round(price);
+                                    }
+                                    return '';
                                 }
                             },
                             grid: {
@@ -573,23 +795,33 @@
                             },
                             min: 0,
                             max: Math.max(...profitMargins) * 1.1,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + Math.round(value);
+                                }
+                            },
                             grid: {
                                 color: 'rgba(0,0,0,0.1)'
                             }
                         },
                         y1: {
                             type: 'linear',
-                            display: true,
+                            display: actualSalesData.length >= 2, // Only show if there are 2+ sales data points
                             position: 'right',
                             title: {
-                                display: true,
-                                text: 'Projected Sales',
+                                display: actualSalesData.length >= 2, // Only show if there are 2+ sales data points
+                                text: 'Projected Daily Sales',
                                 font: {
                                     weight: 'bold'
                                 }
                             },
                             min: 0,
-                            max: Math.max(...extendedSalesData) * 1.1,
+                            max: actualSalesData.length >= 2 ? Math.max(...extendedSalesData) * 1.1 : 0,
+                            ticks: {
+                                callback: function(value) {
+                                    return Math.round(value);
+                                }
+                            },
                             grid: {
                                 drawOnChartArea: false
                             }
@@ -627,7 +859,7 @@
             
             // Update the display
             document.getElementById('optimal-price').textContent = `$${optimalPrice.toFixed(2)}`;
-            document.getElementById('optimal-profit-margin').textContent = `${optimalProfitMargin.toFixed(1)}%`;
+            document.getElementById('optimal-profit-margin').textContent = `${optimalProfitMargin.toFixed(2)}%`;
             document.getElementById('optimal-units-sold').textContent = Math.round(optimalUnitsSold);
             document.getElementById('optimal-total-profit').textContent = `$${optimalTotalProfit.toFixed(2)}`;
             
@@ -641,6 +873,460 @@
         } catch (error) {
             console.error('Error calculating optimal pricing:', error);
         }
+    }
+    
+    // Save current dish to localStorage
+    function saveDish() {
+        const dishName = document.getElementById('dish-name').value.trim();
+        if (!dishName) {
+            alert('Please enter a dish name before saving.');
+            return;
+        }
+        
+        // Check if dish name already exists
+        const existingIndex = savedDishes.findIndex(dish => dish.name === dishName);
+        if (existingIndex !== -1) {
+            // Show overwrite confirmation modal
+            showOverwriteModal(dishName, existingIndex);
+            return;
+        }
+        
+        // Save the dish directly
+        saveDishData(dishName);
+    }
+    
+    // Show overwrite confirmation modal
+    function showOverwriteModal(dishName, existingIndex) {
+        const modalHTML = `
+            <div id="overwriteModal" style="
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            ">
+                <div style="
+                    background-color: white;
+                    padding: 30px;
+                    border-radius: 8px;
+                    max-width: 400px;
+                    width: 90%;
+                ">
+                    <h3 style="margin-top: 0; color: #333;">Dish Already Exists</h3>
+                    <p style="color: #666; margin: 20px 0;">A dish named "<strong>${dishName}</strong>" already exists. Do you want to overwrite it?</p>
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-top: 25px;">
+                        <button onclick="overwriteDish('${dishName}', ${existingIndex})" style="
+                            padding: 10px 20px;
+                            background-color: #dc3545;
+                            color: white;
+                            border: none;
+                            border-radius: 4px;
+                            cursor: pointer;
+                        ">Overwrite</button>
+                        <button onclick="closeOverwriteModal()" style="
+                            padding: 10px 20px;
+                            background-color: #6c757d;
+                            color: white;
+                            border: none;
+                            border-radius: 4px;
+                            cursor: pointer;
+                        ">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    }
+    
+    // Close overwrite modal
+    function closeOverwriteModal() {
+        const modal = document.getElementById('overwriteModal');
+        if (modal) {
+            modal.remove();
+        }
+    }
+    
+    // Overwrite existing dish
+    function overwriteDish(dishName, existingIndex) {
+        savedDishes.splice(existingIndex, 1);
+        closeOverwriteModal();
+        saveDishData(dishName);
+    }
+    
+    // Save dish data (common function for both new and overwrite)
+    function saveDishData(dishName) {
+        
+        // Collect all ingredient data
+        const ingredients = [];
+        const ingredientRows = document.querySelectorAll('.ingredient-row');
+        ingredientRows.forEach(row => {
+            const name = row.querySelector('.ingredient-name').value;
+            const cost = parseFloat(row.querySelector('.ingredient-cost').value) || 0;
+            const amount = parseFloat(row.querySelector('.ingredient-amount').value) || 0;
+            const unit = row.querySelector('.ingredient-unit').value;
+            
+            if (name.trim()) {
+                ingredients.push({ name, cost, amount, unit });
+            }
+        });
+        
+        // Collect sales data
+        const salesData = [];
+        const salesRows = document.querySelectorAll('.sales-row');
+        salesRows.forEach(row => {
+            const price = parseFloat(row.querySelector('.sales-price').value) || 0;
+            const quantity = parseFloat(row.querySelector('.sales-quantity').value) || 0;
+            
+            if (price > 0 && quantity > 0) {
+                salesData.push({ price, quantity });
+            }
+        });
+        
+        // Create dish object
+        const dish = {
+            name: dishName,
+            ingredients: ingredients,
+            laborCost: parseFloat(document.getElementById('labor-cost').value) || 0,
+            overheadCost: parseFloat(document.getElementById('overhead-cost').value) || 0,
+            salesData: salesData,
+            timestamp: new Date().toISOString()
+        };
+        
+        // Save to session memory (demo mode)
+        savedDishes.push(dish);
+        
+        // Show success modal
+        showSaveSuccessModal(dishName);
+        console.log('Saved dish:', dish);
+    }
+    
+    // Show save success modal
+    function showSaveSuccessModal(dishName) {
+        const modalHTML = `
+            <div id="saveSuccessModal" style="
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            ">
+                <div style="
+                    background-color: white;
+                    padding: 30px;
+                    border-radius: 8px;
+                    max-width: 400px;
+                    width: 90%;
+                    text-align: center;
+                ">
+                    <div style="
+                        width: 60px;
+                        height: 60px;
+                        background-color: #28a745;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin: 0 auto 20px;
+                        font-size: 30px;
+                        color: white;
+                    ">✓</div>
+                    <h3 style="margin-top: 0; color: #333;">Dish Saved Successfully!</h3>
+                    <p style="color: #666; margin: 20px 0;">"<strong>${dishName}</strong>" has been saved to your dish library.</p>
+                    <button onclick="closeSaveSuccessModal()" style="
+                        padding: 10px 25px;
+                        background-color: #28a745;
+                        color: white;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-size: 16px;
+                    ">OK</button>
+                </div>
+            </div>
+        `;
+        
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    }
+    
+    // Close save success modal
+    function closeSaveSuccessModal() {
+        const modal = document.getElementById('saveSuccessModal');
+        if (modal) {
+            modal.remove();
+        }
+    }
+    
+    // Clear all form data
+    function clearAllData() {
+        // Show confirmation prompt
+        if (!confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
+            return; // User cancelled
+        }
+        
+        // Clear dish name
+        document.getElementById('dish-name').value = '';
+        
+        // Clear all ingredient rows except the first one
+        const ingredientRows = document.querySelectorAll('.ingredient-row');
+        for (let i = 1; i < ingredientRows.length; i++) {
+            ingredientRows[i].remove();
+        }
+        
+        // Clear the first ingredient row
+        if (ingredientRows.length > 0) {
+            const firstRow = ingredientRows[0];
+            firstRow.querySelector('.ingredient-name').value = '';
+            firstRow.querySelector('.ingredient-cost').value = '0';
+            firstRow.querySelector('.ingredient-amount').value = '0';
+            firstRow.querySelector('.ingredient-unit').value = 'g';
+            
+            // Trigger onchange events
+            firstRow.querySelector('.ingredient-cost').dispatchEvent(new Event('change'));
+            firstRow.querySelector('.ingredient-amount').dispatchEvent(new Event('change'));
+            firstRow.querySelector('.ingredient-unit').dispatchEvent(new Event('change'));
+        }
+        
+        // Clear all sales data rows except the first one
+        const salesRows = document.querySelectorAll('.sales-row');
+        for (let i = 1; i < salesRows.length; i++) {
+            salesRows[i].remove();
+        }
+        
+        // Clear the first sales row
+        if (salesRows.length > 0) {
+            const firstRow = salesRows[0];
+            firstRow.querySelector('.sales-price').value = '0';
+            firstRow.querySelector('.sales-quantity').value = '0';
+            
+            // Trigger onchange events
+            firstRow.querySelector('.sales-price').dispatchEvent(new Event('change'));
+            firstRow.querySelector('.sales-quantity').dispatchEvent(new Event('change'));
+        }
+        
+        // Clear labor and overhead costs
+        document.getElementById('labor-cost').value = '0';
+        document.getElementById('overhead-cost').value = '0';
+        
+        // Trigger onchange events
+        document.getElementById('labor-cost').dispatchEvent(new Event('change'));
+        document.getElementById('overhead-cost').dispatchEvent(new Event('change'));
+        
+        // Clear cost breakdown form data
+        document.getElementById('cost-breakdown-price').value = '0';
+        document.getElementById('cost-breakdown-quantity').value = '0';
+        
+        // Clear alternate pricing calculator form data
+        document.getElementById('alternate-price').value = '0';
+        document.getElementById('alternate-quantity').value = '0';
+        
+        // Clear the chart if it exists
+        if (priceChart) {
+            priceChart.destroy();
+            priceChart = null;
+        }
+        
+        // Clear the canvas
+        const canvas = document.getElementById('priceChart');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+        
+        // Clear optimal pricing display
+        document.getElementById('optimal-price').textContent = '$0.00';
+        document.getElementById('optimal-profit-margin').textContent = '0.00%';
+        document.getElementById('optimal-units-sold').textContent = '0';
+        document.getElementById('optimal-total-profit').textContent = '$0.00';
+        
+        console.log('All form data cleared');
+    }
+    
+    // Load dish from saved dishes
+    function loadDish() {
+        if (savedDishes.length === 0) {
+            alert('No saved dishes found.');
+            return;
+        }
+        
+        // Create and show modal
+        showDishSelectionModal();
+    }
+    
+    // Show dish selection modal
+    function showDishSelectionModal() {
+        // Create modal HTML
+        const modalHTML = `
+            <div id="dishModal" style="
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            ">
+                <div style="
+                    background-color: white;
+                    padding: 30px;
+                    border-radius: 8px;
+                    max-width: 500px;
+                    width: 90%;
+                    max-height: 80vh;
+                    overflow-y: auto;
+                ">
+                    <h3 style="margin-top: 0; color: #333;">Select a Dish to Load</h3>
+                    <div id="dishList" style="margin: 20px 0;">
+                        ${savedDishes.map((dish, index) => `
+                            <div class="dish-option" data-index="${index}" style="
+                                padding: 15px;
+                                margin: 10px 0;
+                                border: 2px solid #dee2e6;
+                                border-radius: 6px;
+                                cursor: pointer;
+                                transition: all 0.2s;
+                                background-color: #f8f9fa;
+                            " onmouseover="this.style.borderColor='#007bff'; this.style.backgroundColor='#e3f2fd';" 
+                               onmouseout="this.style.borderColor='#dee2e6'; this.style.backgroundColor='#f8f9fa';"
+                               onclick="selectDish(${index})">
+                                <div style="font-weight: bold; color: #333;">${dish.name}</div>
+                                <div style="font-size: 12px; color: #666; margin-top: 5px;">
+                                    ${dish.ingredients.length} ingredients • Saved ${new Date(dish.timestamp).toLocaleDateString()}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button onclick="closeDishModal()" style="
+                            padding: 10px 20px;
+                            background-color: #6c757d;
+                            color: white;
+                            border: none;
+                            border-radius: 4px;
+                            cursor: pointer;
+                        ">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Add modal to page
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    }
+    
+    // Close dish selection modal
+    function closeDishModal() {
+        const modal = document.getElementById('dishModal');
+        if (modal) {
+            modal.remove();
+        }
+    }
+    
+    // Select dish from modal
+    function selectDish(index) {
+        if (index < 0 || index >= savedDishes.length) {
+            alert('Invalid selection.');
+            return;
+        }
+        
+        const selectedDish = savedDishes[index];
+        
+        // Close the modal
+        closeDishModal();
+        
+        // Load dish data
+        document.getElementById('dish-name').value = selectedDish.name;
+        document.getElementById('labor-cost').value = selectedDish.laborCost;
+        document.getElementById('overhead-cost').value = selectedDish.overheadCost;
+        
+        // Load ingredients
+        const ingredientsContainer = document.getElementById('ingredients-container');
+        ingredientsContainer.innerHTML = '';
+        
+        selectedDish.ingredients.forEach((ingredient, index) => {
+            const ingredientRow = document.createElement('div');
+            ingredientRow.className = 'ingredient-row';
+            ingredientRow.setAttribute('data-index', index);
+            ingredientRow.innerHTML = `
+                <span class="ingredient-label">Ingredient ${index + 1}:</span>
+                <div class="ingredient-fields">
+                    <div class="ingredient-field">
+                        <label>Name</label>
+                        <input type="text" class="ingredient-name" placeholder="Ingredient Name" value="${ingredient.name}" onchange="updateAllCalculations()">
+                    </div>
+                    <div class="ingredient-field">
+                        <label>Cost ($)</label>
+                        <input type="number" class="ingredient-cost" placeholder="Cost ($)" value="${ingredient.cost}" step="0.01" onchange="updateAllCalculations()">
+                    </div>
+                    <div class="ingredient-field">
+                        <label>Amount</label>
+                        <input type="number" class="ingredient-amount" placeholder="Amount" value="${ingredient.amount}" step="0.01" onchange="updateAllCalculations()">
+                    </div>
+                    <div class="ingredient-field">
+                        <label>Unit</label>
+                        <select class="ingredient-unit" onchange="updateAllCalculations()">
+                            <option value="lbs" ${ingredient.unit === 'lbs' ? 'selected' : ''}>lbs</option>
+                            <option value="oz" ${ingredient.unit === 'oz' ? 'selected' : ''}>oz</option>
+                            <option value="g" ${ingredient.unit === 'g' ? 'selected' : ''}>g</option>
+                            <option value="cups" ${ingredient.unit === 'cups' ? 'selected' : ''}>cups</option>
+                            <option value="tbsp" ${ingredient.unit === 'tbsp' ? 'selected' : ''}>tbsp</option>
+                            <option value="tsp" ${ingredient.unit === 'tsp' ? 'selected' : ''}>tsp</option>
+                            <option value="each" ${ingredient.unit === 'each' ? 'selected' : ''}>each</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-sm btn-danger" onclick="removeIngredient(${index})" style="margin-left: 5px; align-self: flex-end;">×</button>
+                </div>
+            `;
+            ingredientsContainer.appendChild(ingredientRow);
+        });
+        
+        // Load sales data
+        const salesContainer = document.getElementById('sales-data-container');
+        salesContainer.innerHTML = '';
+        
+        selectedDish.salesData.forEach((sale, index) => {
+            const salesRow = document.createElement('div');
+            salesRow.className = 'sales-row';
+            salesRow.setAttribute('data-index', index);
+            salesRow.innerHTML = `
+                <span class="sales-label">Price Point ${index + 1}:</span>
+                <div class="sales-fields">
+                    <div class="sales-field">
+                        <label>Price ($)</label>
+                        <input type="number" class="sales-price" placeholder="Price" value="${sale.price}" step="0.01" onchange="updateSalesChart()">
+                    </div>
+                    <div class="sales-field">
+                        <label>Sales</label>
+                        <input type="number" class="sales-quantity" placeholder="Quantity" value="${sale.quantity}" step="1" onchange="updateSalesChart()">
+                    </div>
+                    <button class="btn btn-sm btn-danger" onclick="removeSalesData(${index})" style="margin-left: 5px; align-self: flex-end;">×</button>
+                </div>
+            `;
+            salesContainer.appendChild(salesRow);
+        });
+        
+        // Update counters
+        ingredientCounter = selectedDish.ingredients.length;
+        salesDataCounter = selectedDish.salesData.length;
+        
+        // Update all calculations
+        updateAllCalculations();
+        
+        alert(`Dish "${selectedDish.name}" loaded successfully!`);
+        console.log('Loaded dish:', selectedDish);
     }
     
     // Get sales data from inputs
@@ -674,7 +1360,7 @@
         newSalesData.className = 'sales-row';
         newSalesData.setAttribute('data-index', currentIndex);
         newSalesData.innerHTML = `
-            <span class="sales-label">Data Point ${salesDataCounter}:</span>
+            <span class="sales-label">Price Point ${salesDataCounter}:</span>
             <div class="sales-fields">
                 <div class="sales-field">
                     <label>Price ($)</label>
@@ -706,7 +1392,7 @@
             for (let i = 0; i < remainingRows.length; i++) {
                 const salesRow = remainingRows[i];
                 salesRow.setAttribute('data-index', i);
-                salesRow.querySelector('.sales-label').textContent = `Data Point ${i + 1}:`;
+                salesRow.querySelector('.sales-label').textContent = `Price Point ${i + 1}:`;
                 salesRow.querySelector('.btn-danger').setAttribute('onclick', `removeSalesData(${i})`);
             }
             
@@ -725,15 +1411,56 @@
         console.log('Calculating total cost...');
         console.log('Found', ingredientCosts.length, 'ingredient cost inputs');
         
+        // Check if all form fields are empty
+        let allFieldsEmpty = true;
+        
+        // Check ingredient fields
         for (let i = 0; i < ingredientCosts.length; i++) {
             const cost = parseFloat(ingredientCosts[i].value) || 0;
             const amount = parseFloat(ingredientAmounts[i].value) || 0;
+            if (cost > 0 || amount > 0) {
+                allFieldsEmpty = false;
+            }
             ingredientTotal += cost * amount;
             console.log(`Ingredient ${i + 1}: cost=${cost}, amount=${amount}, subtotal=${cost * amount}`);
         }
         
         const laborCost = parseFloat(document.getElementById('labor-cost').value) || 0;
         const overheadCost = parseFloat(document.getElementById('overhead-cost').value) || 0;
+        
+        // Check if labor or overhead costs are set
+        if (laborCost > 0 || overheadCost > 0) {
+            allFieldsEmpty = false;
+        }
+        
+        // Check sales data fields
+        const salesPrices = document.querySelectorAll('.sales-price');
+        const salesQuantities = document.querySelectorAll('.sales-quantity');
+        for (let i = 0; i < salesPrices.length; i++) {
+            const price = parseFloat(salesPrices[i].value) || 0;
+            const quantity = parseFloat(salesQuantities[i].value) || 0;
+            if (price > 0 || quantity > 0) {
+                allFieldsEmpty = false;
+            }
+        }
+        
+        // If all fields are empty, set everything to 0
+        if (allFieldsEmpty) {
+            document.getElementById('ingredient-total').textContent = '$0.00';
+            document.getElementById('labor-total').textContent = '$0.00';
+            document.getElementById('overhead-total').textContent = '$0.00';
+            document.getElementById('total-cost').textContent = '$0.00';
+            document.getElementById('suggested-price').textContent = '$0.00';
+            document.getElementById('profit-per-dish').textContent = '$0.00';
+            document.getElementById('actual-profit-margin').textContent = '0%';
+            document.getElementById('cost-percentage').textContent = '0%';
+            document.getElementById('optimal-price').textContent = '$0.00';
+            document.getElementById('optimal-profit-margin').textContent = '0.00%';
+            document.getElementById('optimal-units-sold').textContent = '0';
+            document.getElementById('optimal-total-profit').textContent = '$0.00';
+            return 0;
+        }
+        
         const totalCost = ingredientTotal + laborCost + overheadCost;
         
         console.log('Cost breakdown:', {
@@ -790,8 +1517,8 @@
         const costPercentage = (totalCost / actualPrice) * 100;
         
         document.getElementById('profit-per-dish').textContent = `$${profitPerDish.toFixed(2)}`;
-        document.getElementById('actual-profit-margin').textContent = `${actualProfitMargin.toFixed(1)}%`;
-        document.getElementById('cost-percentage').textContent = `${costPercentage.toFixed(1)}%`;
+        document.getElementById('actual-profit-margin').textContent = `${actualProfitMargin.toFixed(2)}%`;
+        document.getElementById('cost-percentage').textContent = `${costPercentage.toFixed(2)}%`;
         
         // Color coding for profit margin
         const profitMarginElement = document.getElementById('actual-profit-margin');
@@ -903,8 +1630,95 @@
         checkChartJS();
     }
     
+    // Load default example data
+    function loadDefaultExampleData() {
+        // Reset dish name
+        document.getElementById('dish-name').value = 'Beef Stir-Fry';
+        
+        // Reset ingredient data
+        const ingredientRows = document.querySelectorAll('.ingredient-row');
+        
+        // Clear all ingredient rows except the first one
+        for (let i = 1; i < ingredientRows.length; i++) {
+            ingredientRows[i].remove();
+        }
+        
+        // Set first ingredient data
+        if (ingredientRows.length > 0) {
+            const firstRow = ingredientRows[0];
+            firstRow.querySelector('.ingredient-name').value = 'Beef';
+            firstRow.querySelector('.ingredient-cost').value = '15.99';
+            firstRow.querySelector('.ingredient-amount').value = '0.4';
+            firstRow.querySelector('.ingredient-unit').value = 'lbs';
+        }
+        
+        // Add second ingredient
+        addIngredient();
+        const secondRow = document.querySelectorAll('.ingredient-row')[1];
+        if (secondRow) {
+            secondRow.querySelector('.ingredient-name').value = 'Noodles';
+            secondRow.querySelector('.ingredient-cost').value = '2.49';
+            secondRow.querySelector('.ingredient-amount').value = '0.3';
+            secondRow.querySelector('.ingredient-unit').value = 'lbs';
+        }
+        
+        // Add third ingredient
+        addIngredient();
+        const thirdRow = document.querySelectorAll('.ingredient-row')[2];
+        if (thirdRow) {
+            thirdRow.querySelector('.ingredient-name').value = 'Vegetables';
+            thirdRow.querySelector('.ingredient-cost').value = '3.99';
+            thirdRow.querySelector('.ingredient-amount').value = '0.2';
+            thirdRow.querySelector('.ingredient-unit').value = 'lbs';
+        }
+        
+        // Reset labor and overhead costs
+        document.getElementById('labor-cost').value = '4.25';
+        document.getElementById('overhead-cost').value = '2.15';
+        
+        // Reset sales data
+        const salesRows = document.querySelectorAll('.sales-row');
+        
+        // Clear all sales rows except the first one
+        for (let i = 1; i < salesRows.length; i++) {
+            salesRows[i].remove();
+        }
+        
+        // Set first sales data
+        if (salesRows.length > 0) {
+            const firstRow = salesRows[0];
+            firstRow.querySelector('.sales-price').value = '14.00';
+            firstRow.querySelector('.sales-quantity').value = '28';
+        }
+        
+        // Add second sales data
+        addSalesData();
+        const secondSalesRow = document.querySelectorAll('.sales-row')[1];
+        if (secondSalesRow) {
+            secondSalesRow.querySelector('.sales-price').value = '16.00';
+            secondSalesRow.querySelector('.sales-quantity').value = '22';
+        }
+        
+        // Add third sales data
+        addSalesData();
+        const thirdSalesRow = document.querySelectorAll('.sales-row')[2];
+        if (thirdSalesRow) {
+            thirdSalesRow.querySelector('.sales-price').value = '18.00';
+            thirdSalesRow.querySelector('.sales-quantity').value = '15';
+        }
+        
+        // Reset counters
+        ingredientCounter = 3;
+        salesDataCounter = 3;
+        
+        console.log('Default example data loaded');
+    }
+    
     // Initialize the calculator when the page loads
     window.onload = function() {
+        // Load default example data
+        loadDefaultExampleData();
+        
         // Run basic calculations immediately
         calculateTotal();
         calculatePrice();
