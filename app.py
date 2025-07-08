@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import numpy as np
 from scipy.optimize import curve_fit
+import pulp
 
 app = Flask(__name__)
 
@@ -208,6 +209,10 @@ def page5():
         page_points['page5'] = demo_points.copy()
     return render_template('page5.html', title='Page 5', points=page_points.get('page5', []))
 
+@app.route('/page6')
+def page6():
+    return render_template('page6.html', title='Employee Efficiency Calculator')
+
 @app.route('/submit_points', methods=['POST'])
 def submit_points():
     """Handle point submission from frontend"""
@@ -254,6 +259,73 @@ def load_demo():
         'success': False,
         'message': 'Invalid page'
     }), 400
+
+@app.route('/api/optimize_schedule', methods=['POST'])
+def optimize_schedule():
+    data = request.get_json()
+    employees = data['employees']  # List of dicts: {id, name, receptionist_efficiency, waiter_efficiency, cook_efficiency, cashier_efficiency, cleaner_efficiency}
+    days = data['days']            # List of day names, e.g. ['Sun', 'Mon', ...]
+    roles = data['roles']          # List of role dicts: {key, label}
+    role_limits = data['role_limits']  # Dict: {role_label: limit}
+    max_days_per_employee = data.get('max_days_per_employee', 5)
+    max_employees_per_day = data.get('max_employees_per_day', 28)
+
+    num_employees = len(employees)
+    num_days = len(days)
+    num_roles = len(roles)
+
+    # Build efficiency matrix: [employee][day][role]
+    eff = [[[0 for _ in range(num_roles)] for _ in range(num_days)] for _ in range(num_employees)]
+    for i, emp in enumerate(employees):
+        for r, role in enumerate(roles):
+            key = role['key']
+            for d in range(num_days):
+                eff[i][d][r] = emp[key]
+
+    # ILP variables: x[i][d][r] = 1 if employee i is assigned to role r on day d
+    x = [[[pulp.LpVariable(f'x_{i}_{d}_{r}', cat='Binary') for r in range(num_roles)] for d in range(num_days)] for i in range(num_employees)]
+
+    prob = pulp.LpProblem('ScheduleOptimization', pulp.LpMaximize)
+
+    # Objective: maximize total efficiency
+    prob += pulp.lpSum(eff[i][d][r] * x[i][d][r] for i in range(num_employees) for d in range(num_days) for r in range(num_roles))
+
+    # Constraint: Each employee works at most max_days_per_employee days
+    for i in range(num_employees):
+        prob += pulp.lpSum(x[i][d][r] for d in range(num_days) for r in range(num_roles)) <= max_days_per_employee
+
+    # Constraint: Each employee can have at most one role per day
+    for i in range(num_employees):
+        for d in range(num_days):
+            prob += pulp.lpSum(x[i][d][r] for r in range(num_roles)) <= 1
+
+    # Constraint: Each role has at most role_limits[role] employees per day (except Waiter, which soaks up the rest)
+    for r, role in enumerate(roles):
+        if role['label'] == 'Waiter':
+            continue  # Waiter will be filled by the total employees per day constraint
+        limit = role_limits.get(role['label'], max_employees_per_day)
+        for d in range(num_days):
+            prob += pulp.lpSum(x[i][d][r] for i in range(num_employees)) <= limit
+
+    # Constraint: No more than and no less than max_employees_per_day employees per day
+    for d in range(num_days):
+        prob += pulp.lpSum(x[i][d][r] for i in range(num_employees) for r in range(num_roles)) == max_employees_per_day
+
+    # Solve
+    prob.solve(pulp.PULP_CBC_CMD(msg=0))
+
+    # Build result: for each day, for each role, list assigned employees
+    schedule = {day: {role['label']: [] for role in roles} for day in days}
+    for i, emp in enumerate(employees):
+        for d, day in enumerate(days):
+            for r, role in enumerate(roles):
+                if pulp.value(x[i][d][r]) == 1:
+                    schedule[day][role['label']].append(emp['name'])
+
+    # Also return the total efficiency
+    total_efficiency = int(pulp.value(prob.objective))
+
+    return jsonify({'schedule': schedule, 'total_efficiency': total_efficiency})
 
 if __name__ == '__main__':
     app.run(debug=True) 
